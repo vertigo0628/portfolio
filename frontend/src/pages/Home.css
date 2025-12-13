@@ -497,6 +497,165 @@ body {
   color: var(--text-muted);
 }
 
+/* VTexter Section Styles */
+.vtexter-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.vtexter-main-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.vtexter-main-card:hover {
+  border-color: var(--accent-green);
+  box-shadow: var(--glow-green);
+  transform: translateY(-5px);
+}
+
+.vtexter-content {
+  padding: 40px;
+}
+
+.vtexter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.vtexter-tech-stack {
+  margin-top: 30px;
+}
+
+.tech-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vtexter-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.feature-card:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.2);
+  transform: translateY(-3px);
+}
+
+.feature-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--accent-green);
+  margin-bottom: 10px;
+}
+
+.feature-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: "•";
+  color: var(--accent-green);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.vtexter-status-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(52, 199, 89, 0.1) 100%);
+  border: 1px solid var(--accent-green);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.status-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.status-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* Responsive Design for VTexter Section */
+@media (max-width: 768px) {
+  .vtexter-features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .vtexter-content {
+    padding: 25px;
+  }
+  
+  .feature-content {
+    padding: 20px;
+  }
+  
+  .tech-badges {
+    gap: 8px;
+  }
+  
+  .tech-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}
+
 /* Design Process */
 .process-timeline {
   display: flex;

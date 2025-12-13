@@ -60,7 +60,7 @@ END:VCARD`;
           </div>
           <nav className="nav-menu">
             <a href="#about" className="nav-link">About</a>
-            <a href="#projects" className="nav-link">Projects</a>
+            <a href="#vtexter" className="nav-link">VTexter</a>
             <a href="#security" className="nav-link">Security</a>
             <a href="#blog" className="nav-link">Blog</a>
             <a href="#contact" className="nav-link">Contact</a>
@@ -175,35 +175,140 @@ END:VCARD`;
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="projects-section">
+      {/* VTexter App Section */}
+      <section id="vtexter" className="projects-section">
         <div className="section-content">
           <div className="section-header">
-            <h2 className="section-title">Featured Projects</h2>
+            <h2 className="section-title">VTexter - Advanced Messaging App</h2>
             <Separator className="title-separator" />
           </div>
-          <div className="projects-grid">
-            {portfolioData.projects.map((project) => (
-              <Card key={project.id} className="project-card">
-                <CardContent className="project-content">
-                  <div className="project-header">
-                    <Badge className="project-category">{project.category}</Badge>
-                    <span className="project-year">{project.year}</span>
+          <div className="vtexter-showcase">
+            <Card className="vtexter-main-card">
+              <CardContent className="vtexter-content">
+                <div className="vtexter-header">
+                  <Badge className="project-category">Mobile Development</Badge>
+                  <span className="project-year">2024</span>
+                </div>
+                <h3 className="project-title">VTexter - Secure Real-Time Messaging Platform</h3>
+                <p className="project-description">
+                  A comprehensive Android messaging application built with modern technologies, featuring real-time communication, 
+                  advanced media handling, and robust security measures. VTexter represents the culmination of mobile development 
+                  expertise, combining elegant UI/UX design with powerful backend integration.
+                </p>
+                <div className="vtexter-tech-stack">
+                  <h4 className="tech-title">Technology Stack</h4>
+                  <div className="tech-badges">
+                    <Badge variant="outline" className="tech-badge">Kotlin</Badge>
+                    <Badge variant="outline" className="tech-badge">Jetpack Compose</Badge>
+                    <Badge variant="outline" className="tech-badge">Firebase</Badge>
+                    <Badge variant="outline" className="tech-badge">Room Database</Badge>
+                    <Badge variant="outline" className="tech-badge">Supabase</Badge>
+                    <Badge variant="outline" className="tech-badge">Coroutines</Badge>
+                    <Badge variant="outline" className="tech-badge">MVVM Architecture</Badge>
+                    <Badge variant="outline" className="tech-badge">Material Design 3</Badge>
                   </div>
-                  <h3 className="project-title">{project.title}</h3>
-                  <p className="project-description">{project.description}</p>
-                  <div className="project-tech">
-                    {project.technologies.map((tech, idx) => (
-                      <Badge key={idx} variant="outline" className="tech-badge">{tech}</Badge>
-                    ))}
-                  </div>
-                  <div className="project-status">
-                    <span className={`status-indicator ${project.status}`}></span>
-                    <span className="status-text">{project.status === 'completed' ? 'Completed' : 'In Progress'}</span>
-                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="vtexter-features-grid">
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <MessageSquare className="feature-icon" />
+                  <h4 className="feature-title">Real-Time Messaging</h4>
+                  <ul className="feature-list">
+                    <li>Instant message delivery with Firebase Cloud Messaging</li>
+                    <li>Message status indicators (sent, delivered, read)</li>
+                    <li>Typing indicators and online status tracking</li>
+                    <li>Push notifications for new messages</li>
+                  </ul>
                 </CardContent>
               </Card>
-            ))}
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Code2 className="feature-icon" />
+                  <h4 className="feature-title">Advanced Media Handling</h4>
+                  <ul className="feature-list">
+                    <li>Voice note recording with real-time timer display</li>
+                    <li>Image, video, and document sharing capabilities</li>
+                    <li>Supabase cloud storage integration for media</li>
+                    <li>Local file management with automatic fallback</li>
+                    <li>Media compression and optimization</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Shield className="feature-icon" />
+                  <h4 className="feature-title">Security & Privacy</h4>
+                  <ul className="feature-list">
+                    <li>End-to-end encryption for sensitive data</li>
+                    <li>Secure authentication with Firebase Auth</li>
+                    <li>Permission-based access control</li>
+                    <li>Local data encryption with Room Database</li>
+                    <li>Secure file storage with Supabase</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Palette className="feature-icon" />
+                  <h4 className="feature-title">UI/UX Excellence</h4>
+                  <ul className="feature-list">
+                    <li>Modern Material Design 3 interface</li>
+                    <li>Jetpack Compose for reactive UI</li>
+                    <li>Dark/Light theme support</li>
+                    <li>Smooth animations and transitions</li>
+                    <li>Intuitive navigation and user experience</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Github className="feature-icon" />
+                  <h4 className="feature-title">Technical Architecture</h4>
+                  <ul className="feature-list">
+                    <li>MVVM (Model-View-ViewModel) pattern</li>
+                    <li>Repository pattern for data management</li>
+                    <li>Dependency injection with Hilt</li>
+                    <li>Coroutines for asynchronous operations</li>
+                    <li>Clean, scalable, and maintainable code</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Star className="feature-icon" />
+                  <h4 className="feature-title">Recent Enhancements</h4>
+                  <ul className="feature-list">
+                    <li>Supabase media storage integration</li>
+                    <li>Voice note timer improvements</li>
+                    <li>Contact sharing and download functionality</li>
+                    <li>Portfolio integration in About section</li>
+                    <li>Enhanced error handling and user feedback</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="vtexter-status-card">
+              <CardContent className="status-content">
+                <div className="project-status">
+                  <span className="status-indicator completed"></span>
+                  <span className="status-text">Actively Developed</span>
+                </div>
+                <p className="status-description">
+                  VTexter is continuously evolving with new features and improvements based on modern mobile development 
+                  best practices and user feedback. The app demonstrates expertise in full-stack Android development, 
+                  from UI design to backend integration and security implementation.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
