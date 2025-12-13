@@ -12,11 +12,13 @@ const MusicPlayer = () => {
   const [showVolumeTooltip, setShowVolumeTooltip] = useState(false);
   const [showTrackList, setShowTrackList] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [audioInitialized, setAudioInitialized] = useState(false);
   const audioRef = useRef(null);
   const playerRef = useRef(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const touchStartPos = useRef({ x: 0, y: 0 });
   const longPressTimer = useRef(null);
+  const audioContextRef = useRef(null);
 
   // Music tracks configuration
   const tracks = [
@@ -55,34 +57,76 @@ const MusicPlayer = () => {
     }
   }, [volume]);
 
+  // Initialize audio context for mobile browsers
+  const initializeAudio = async () => {
+    if (audioInitialized) return;
+    
+    try {
+      // Create and resume audio context for mobile
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext && !audioContextRef.current) {
+        audioContextRef.current = new AudioContext();
+        await audioContextRef.current.resume();
+      }
+      
+      // Load audio element
+      if (audioRef.current) {
+        audioRef.current.load();
+        setAudioInitialized(true);
+      }
+    } catch (err) {
+      console.log('Audio initialization failed:', err);
+    }
+  };
+
   const togglePlay = async () => {
+    // Initialize audio on first interaction
+    if (!audioInitialized) {
+      await initializeAudio();
+    }
+    
     if (audioRef.current) {
       try {
         if (isPlaying) {
           audioRef.current.pause();
-          setIsPlaying(false); // Make sure state is updated immediately
+          setIsPlaying(false);
         } else {
-          // Ensure audio context is resumed for mobile browsers
-          if (audioRef.current.paused) {
-            await audioRef.current.play();
-            setIsPlaying(true); // Set state after successful play
+          // For mobile, ensure we have user interaction context
+          if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+            await audioContextRef.current.resume();
+          }
+          
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+            setIsPlaying(true);
           }
         }
       } catch (err) {
         console.log('Audio playback failed:', err);
-        // Try to create a new audio context for mobile
+        setIsPlaying(false);
+        
+        // Fallback: try to create a silent audio context first
         try {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) {
-            const audioContext = new AudioContext();
-            await audioContext.resume();
-            // Retry playing
-            await audioRef.current.play();
-            setIsPlaying(true);
+          if (!audioContextRef.current) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioContextRef.current = new AudioContext();
           }
+          await audioContextRef.current.resume();
+          
+          // Create a silent buffer to establish audio context
+          const silentBuffer = audioContextRef.current.createBuffer(1, 1, 22050);
+          const source = audioContextRef.current.createBufferSource();
+          source.buffer = silentBuffer;
+          source.connect(audioContextRef.current.destination);
+          source.start();
+          source.stop();
+          
+          // Now try to play the actual audio
+          await audioRef.current.play();
+          setIsPlaying(true);
         } catch (retryErr) {
-          console.log('Retry failed:', retryErr);
-          setIsPlaying(false); // Ensure state is correct on failure
+          console.log('Mobile audio fallback failed:', retryErr);
         }
       }
     }
@@ -127,10 +171,16 @@ const MusicPlayer = () => {
     }
   };
 
-  // Simplified touch handlers with mobile support
+  // Mobile-optimized touch handlers
   const handlePlayPause = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Ensure audio context is initialized on first touch
+    if (!audioInitialized) {
+      await initializeAudio();
+    }
+    
     await togglePlay();
   };
 
@@ -261,16 +311,16 @@ const MusicPlayer = () => {
     >
       <audio 
         ref={audioRef} 
-        loop={false} // Disable loop to allow track switching
+        loop={false}
         onEnded={() => {
           setIsPlaying(false);
-          // Auto-play next track if available
           if (tracks.length > 1) {
             nextTrack();
           }
         }}
-        key={currentTrackIndex} // Force re-render when track changes
-        preload="metadata" // Preload metadata for better mobile performance
+        key={currentTrackIndex}
+        preload="none" // Don't preload until user interaction
+        crossOrigin="anonymous" // Help with mobile CORS issues
       >
         <source src={currentTrack.file} type="audio/mpeg" />
       </audio>
