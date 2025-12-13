@@ -60,12 +60,12 @@ const MusicPlayer = () => {
       try {
         if (isPlaying) {
           audioRef.current.pause();
-          setIsPlaying(false);
+          setIsPlaying(false); // Make sure state is updated immediately
         } else {
           // Ensure audio context is resumed for mobile browsers
           if (audioRef.current.paused) {
             await audioRef.current.play();
-            setIsPlaying(true);
+            setIsPlaying(true); // Set state after successful play
           }
         }
       } catch (err) {
@@ -82,6 +82,7 @@ const MusicPlayer = () => {
           }
         } catch (retryErr) {
           console.log('Retry failed:', retryErr);
+          setIsPlaying(false); // Ensure state is correct on failure
         }
       }
     }
