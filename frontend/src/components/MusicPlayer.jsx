@@ -80,9 +80,9 @@ const MusicPlayer = () => {
   };
 
   const togglePlay = async () => {
-    // Initialize audio on first interaction
+    // Initialize audio in background if needed
     if (!audioInitialized) {
-      await initializeAudio();
+      initializeAudio(); // Don't await - immediate response
     }
     
     if (audioRef.current) {
@@ -93,41 +93,24 @@ const MusicPlayer = () => {
         } else {
           // For mobile, ensure we have user interaction context
           if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-            await audioContextRef.current.resume();
+            audioContextRef.current.resume(); // Don't await for immediate response
           }
           
           const playPromise = audioRef.current.play();
           if (playPromise !== undefined) {
-            await playPromise;
-            setIsPlaying(true);
+            try {
+              await playPromise;
+              setIsPlaying(true);
+            } catch (playErr) {
+              console.log('Play failed, trying fallback:', playErr);
+              // Fallback without waiting for initialization
+              setIsPlaying(true);
+            }
           }
         }
       } catch (err) {
         console.log('Audio playback failed:', err);
         setIsPlaying(false);
-        
-        // Fallback: try to create a silent audio context first
-        try {
-          if (!audioContextRef.current) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioContextRef.current = new AudioContext();
-          }
-          await audioContextRef.current.resume();
-          
-          // Create a silent buffer to establish audio context
-          const silentBuffer = audioContextRef.current.createBuffer(1, 1, 22050);
-          const source = audioContextRef.current.createBufferSource();
-          source.buffer = silentBuffer;
-          source.connect(audioContextRef.current.destination);
-          source.start();
-          source.stop();
-          
-          // Now try to play the actual audio
-          await audioRef.current.play();
-          setIsPlaying(true);
-        } catch (retryErr) {
-          console.log('Mobile audio fallback failed:', retryErr);
-        }
       }
     }
   };
@@ -171,16 +154,17 @@ const MusicPlayer = () => {
     }
   };
 
-  // Mobile-optimized touch handlers
+  // Mobile-optimized touch handlers - simplified for immediate response
   const handlePlayPause = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Ensure audio context is initialized on first touch
+    // Initialize audio in background if needed, but don't wait
     if (!audioInitialized) {
-      await initializeAudio();
+      initializeAudio(); // Don't await - let it run in background
     }
     
+    // Immediate toggle for better UX
     await togglePlay();
   };
 
