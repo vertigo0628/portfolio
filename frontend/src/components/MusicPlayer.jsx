@@ -55,20 +55,39 @@ const MusicPlayer = () => {
     }
   }, [volume]);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(err => {
-          console.log('Audio playback failed:', err);
-        });
+      try {
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          // Ensure audio context is resumed for mobile browsers
+          if (audioRef.current.paused) {
+            await audioRef.current.play();
+            setIsPlaying(true);
+          }
+        }
+      } catch (err) {
+        console.log('Audio playback failed:', err);
+        // Try to create a new audio context for mobile
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            const audioContext = new AudioContext();
+            await audioContext.resume();
+            // Retry playing
+            await audioRef.current.play();
+            setIsPlaying(true);
+          }
+        } catch (retryErr) {
+          console.log('Retry failed:', retryErr);
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
-  const switchTrack = (index) => {
+  const switchTrack = async (index) => {
     const wasPlaying = isPlaying;
     setIsPlaying(false);
     if (audioRef.current) {
@@ -78,12 +97,14 @@ const MusicPlayer = () => {
     setCurrentTrackIndex(index);
     
     // Auto-play new track if previous was playing
-    setTimeout(() => {
+    setTimeout(async () => {
       if (wasPlaying && audioRef.current) {
-        audioRef.current.play().catch(err => {
-          console.log('Audio playback failed:', err);
-        });
-        setIsPlaying(true);
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (err) {
+          console.log('Auto-play failed, user interaction required:', err);
+        }
       }
     }, 100);
   };
@@ -105,11 +126,11 @@ const MusicPlayer = () => {
     }
   };
 
-  // Simplified touch handlers
-  const handlePlayPause = (e) => {
+  // Simplified touch handlers with mobile support
+  const handlePlayPause = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    togglePlay();
+    await togglePlay();
   };
 
   const handlePrevTrack = (e) => {
@@ -239,7 +260,7 @@ const MusicPlayer = () => {
     >
       <audio 
         ref={audioRef} 
-        loop
+        loop={false} // Disable loop to allow track switching
         onEnded={() => {
           setIsPlaying(false);
           // Auto-play next track if available
@@ -248,6 +269,7 @@ const MusicPlayer = () => {
           }
         }}
         key={currentTrackIndex} // Force re-render when track changes
+        preload="metadata" // Preload metadata for better mobile performance
       >
         <source src={currentTrack.file} type="audio/mpeg" />
       </audio>
