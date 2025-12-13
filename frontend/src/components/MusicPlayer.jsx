@@ -27,17 +27,17 @@ const MusicPlayer = () => {
       duration: "3:45"
     },
     {
-    title: "waiting for love.mp3",
-    artist: "Portfolio Theme", 
-    file: "/music/waiting for love.mp3",
-    duration: "3:56"
-  },
-  {
-    title: "Anxiety",
-    artist: "Portfolio Theme",
-    file: "/music/Anxiety.mp3", 
-    duration: "4:20"
-  },
+      title: "Waiting for Love",
+      artist: "Portfolio Theme", 
+      file: "/music/Waiting for Love.mp3",
+      duration: "3:56"
+    },
+    {
+      title: "Anxiety",
+      artist: "Portfolio Theme",
+      file: "/music/Anxiety.mp3", 
+      duration: "4:20"
+    },
     // Add more tracks here by following this format:
     // {
     //   title: "Your Track Name",
@@ -105,46 +105,29 @@ const MusicPlayer = () => {
     }
   };
 
-  // Smart toggle: single tap for play/pause, long press for mute/unmute
-  const handleMainTouch = (e) => {
+  // Simplified touch handlers
+  const handlePlayPause = (e) => {
     e.preventDefault();
-    
-    // Clear any existing timer
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-    
-    // Start long press timer
-    longPressTimer.current = setTimeout(() => {
-      toggleMute();
-      setShowVolumeTooltip(true);
-      setTimeout(() => setShowVolumeTooltip(false), 2000);
-    }, 500); // 500ms for long press
-    
-    // Handle touch end for single tap
-    const handleTouchEnd = () => {
-      if (longPressTimer.current) {
-        clearTimeout(longPressTimer.current);
-        togglePlay(); // Single tap - play/pause
-      }
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('mouseup', handleTouchEnd);
-    };
-    
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('mouseup', handleTouchEnd);
+    e.stopPropagation();
+    togglePlay();
   };
 
-  // Quick volume adjustment with swipe
-  const handleVolumeSwipe = (deltaY) => {
-    const sensitivity = 0.01;
-    const newVolume = Math.max(0, Math.min(1, volume - (deltaY * sensitivity)));
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-    setShowVolumeTooltip(true);
-    setTimeout(() => setShowVolumeTooltip(false), 1000);
+  const handlePrevTrack = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    prevTrack();
+  };
+
+  const handleNextTrack = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    nextTrack();
+  };
+
+  const handleMuteToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMute();
   };
 
   const handleVolumeChange = (e) => {
@@ -169,46 +152,17 @@ const MusicPlayer = () => {
   };
 
   const handleTouchStart = (e) => {
-    if (e.target.closest('.control-button') || e.target.closest('.volume-slider')) {
+    if (e.target.closest('.control-button') || e.target.closest('.volume-slider') || e.target.closest('.track-item')) {
       return;
     }
     
     const touch = e.touches[0];
     touchStartPos.current = {
       x: touch.clientX - position.x,
-      y: touch.clientY - position.y,
-      initialY: touch.clientY
+      y: touch.clientY - position.y
     };
+    setIsDragging(true);
     e.preventDefault();
-  };
-
-  const handleTouchMove = (e) => {
-    const touch = e.touches[0];
-    const deltaY = touch.clientY - touchStartPos.current.initialY;
-    
-    // Vertical swipe for volume when not dragging
-    if (Math.abs(deltaY) > 10 && !isDragging) {
-      handleVolumeSwipe(deltaY);
-      return;
-    }
-    
-    // Horizontal/diagonal movement for dragging
-    if (!isDragging && Math.abs(touch.clientX - touchStartPos.current.x - position.x) > 20) {
-      setIsDragging(true);
-    }
-    
-    if (isDragging) {
-      const newX = touch.clientX - touchStartPos.current.x;
-      const newY = touch.clientY - touchStartPos.current.y;
-      
-      const maxX = window.innerWidth - 280;
-      const maxY = window.innerHeight - 120;
-      
-      setPosition({
-        x: Math.max(0, Math.min(newX, maxX)),
-        y: Math.max(0, Math.min(newY, maxY))
-      });
-    }
   };
 
   const handleMouseMove = (e) => {
@@ -233,6 +187,33 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     if (isDragging) {
+      const handleMouseMove = (e) => {
+        const newX = e.clientX - dragStartPos.current.x;
+        const newY = e.clientY - dragStartPos.current.y;
+        
+        const maxX = window.innerWidth - 280;
+        const maxY = window.innerHeight - 120;
+        
+        setPosition({
+          x: Math.max(0, Math.min(newX, maxX)),
+          y: Math.max(0, Math.min(newY, maxY))
+        });
+      };
+
+      const handleTouchMove = (e) => {
+        const touch = e.touches[0];
+        const newX = touch.clientX - touchStartPos.current.x;
+        const newY = touch.clientY - touchStartPos.current.y;
+        
+        const maxX = window.innerWidth - 280;
+        const maxY = window.innerHeight - 120;
+        
+        setPosition({
+          x: Math.max(0, Math.min(newX, maxX)),
+          y: Math.max(0, Math.min(newY, maxY))
+        });
+      };
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('touchmove', handleTouchMove);
@@ -302,8 +283,8 @@ const MusicPlayer = () => {
       <div className="player-controls">
         <button 
           className="control-button main-control" 
-          onTouchStart={handleMainTouch}
-          onMouseDown={handleMainTouch}
+          onClick={handlePlayPause}
+          onTouchStart={handlePlayPause}
           title={isPlaying ? 'Pause' : 'Play'}
         >
           {isPlaying ? <Pause size={20} /> : <Play size={20} />}
@@ -315,7 +296,8 @@ const MusicPlayer = () => {
               <div className="track-controls">
                 <button 
                   className="control-button track-button" 
-                  onClick={prevTrack}
+                  onClick={handlePrevTrack}
+                  onTouchStart={handlePrevTrack}
                   title="Previous track"
                 >
                   <ChevronUp size={16} />
@@ -325,7 +307,8 @@ const MusicPlayer = () => {
                 </span>
                 <button 
                   className="control-button track-button" 
-                  onClick={nextTrack}
+                  onClick={handleNextTrack}
+                  onTouchStart={handleNextTrack}
                   title="Next track"
                 >
                   <ChevronDown size={16} />
@@ -336,7 +319,8 @@ const MusicPlayer = () => {
             <div className="volume-control expanded">
               <button 
                 className="control-button" 
-                onClick={toggleMute}
+                onClick={handleMuteToggle}
+                onTouchStart={handleMuteToggle}
                 title={isMuted ? 'Unmute' : 'Mute'}
               >
                 {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
