@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { portfolioData } from '../mock';
 import Spline from '@splinetool/react-spline';
 import WelcomePopup from '../components/WelcomePopup';
@@ -10,20 +10,92 @@ import { Separator } from '../components/ui/separator';
 import { 
   Mail, Phone, Github, Linkedin, Instagram, Download, 
   Code2, Shield, Palette, ArrowRight, Star, MessageSquare,
-  MapPin, GraduationCap, Briefcase
+  MapPin, GraduationCap, Briefcase, Loader2
 } from 'lucide-react';
 import './Home.css';
 
 const Home = () => {
   const [showWelcome, setShowWelcome] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState({
+    loading: false,
+    success: false,
+    error: ''
+  });
 
-  useEffect(() => {
+  useState(() => {
     const hasVisited = localStorage.getItem('hasVisitedPortfolio');
     if (!hasVisited) {
       setShowWelcome(true);
       localStorage.setItem('hasVisitedPortfolio', 'true');
     }
   }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setFormStatus({ loading: false, success: false, error: 'Please enter your name' });
+      return false;
+    }
+    if (!formData.email.trim()) {
+      setFormStatus({ loading: false, success: false, error: 'Please enter your email' });
+      return false;
+    }
+    if (!formData.email.includes('@')) {
+      setFormStatus({ loading: false, success: false, error: 'Please enter a valid email' });
+      return false;
+    }
+    if (!formData.message.trim()) {
+      setFormStatus({ loading: false, success: false, error: 'Please enter your message' });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setFormStatus({ loading: true, success: false, error: '' });
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        setFormStatus({ loading: false, success: true, error: '' });
+        setFormData({ name: '', email: '', message: '' });
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setFormStatus(prev => ({ ...prev, success: false }));
+        }, 5000);
+      } else {
+        setFormStatus({ loading: false, success: false, error: result.detail || 'Failed to send message' });
+      }
+    } catch (err) {
+      setFormStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+    }
+  };
 
   const downloadVCard = () => {
     const vcard = `BEGIN:VCARD
@@ -455,22 +527,74 @@ END:VCARD`;
             <Card className="contact-card">
               <CardContent className="contact-form">
                 <h3 className="form-title">Send a Message</h3>
-                <div className="form-group">
-                  <label className="form-label">Name</label>
-                  <input type="text" className="form-input" placeholder="Your name" />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Email</label>
-                  <input type="email" className="form-input" placeholder="your.email@example.com" />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Message</label>
-                  <textarea className="form-textarea" rows="4" placeholder="Tell me about your project..."></textarea>
-                </div>
-                <Button className="btn-submit">
-                  Send Message
-                  <MessageSquare size={20} />
-                </Button>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label className="form-label">Name</label>
+                    <input 
+                      type="text" 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="form-input" 
+                      placeholder="Your name" 
+                      disabled={formStatus.loading}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Email</label>
+                    <input 
+                      type="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="form-input" 
+                      placeholder="your.email@example.com" 
+                      disabled={formStatus.loading}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Message</label>
+                    <textarea 
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className="form-textarea" 
+                      rows="4" 
+                      placeholder="Tell me about your project..."
+                      disabled={formStatus.loading}
+                    ></textarea>
+                  </div>
+                  
+                  {formStatus.error && (
+                    <div className="form-error">
+                      {formStatus.error}
+                    </div>
+                  )}
+                  
+                  {formStatus.success && (
+                    <div className="form-success">
+                      Message sent successfully! I'll get back to you soon.
+                    </div>
+                  )}
+                  
+                  <Button 
+                    type="submit" 
+                    className="btn-submit" 
+                    disabled={formStatus.loading}
+                  >
+                    {formStatus.loading ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <MessageSquare size={20} />
+                      </>
+                    )}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </div>
