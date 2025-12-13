@@ -338,6 +338,22 @@
   margin-top: 2px;
 }
 
+.instruction-text {
+  font-size: 10px;
+  color: #34C759;
+  font-weight: 600;
+  margin-top: 4px;
+  animation: pulse 2s infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
 .track-list-button {
   background: rgba(52, 199, 89, 0.1);
   border: 1px solid rgba(52, 199, 89, 0.3);

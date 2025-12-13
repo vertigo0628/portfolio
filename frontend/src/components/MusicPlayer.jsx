@@ -58,7 +58,7 @@ const MusicPlayer = () => {
   }, [volume]);
 
   // Initialize audio context for mobile browsers
-  const initializeAudio = async () => {
+  const initializeAudio = () => {
     if (audioInitialized) return;
     
     try {
@@ -66,7 +66,7 @@ const MusicPlayer = () => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (AudioContext && !audioContextRef.current) {
         audioContextRef.current = new AudioContext();
-        await audioContextRef.current.resume();
+        audioContextRef.current.resume(); // Don't await for immediate response
       }
       
       // Load audio element
@@ -79,7 +79,7 @@ const MusicPlayer = () => {
     }
   };
 
-  const togglePlay = async () => {
+  const togglePlay = () => {
     // Initialize audio in background if needed
     if (!audioInitialized) {
       initializeAudio(); // Don't await - immediate response
@@ -96,16 +96,16 @@ const MusicPlayer = () => {
             audioContextRef.current.resume(); // Don't await for immediate response
           }
           
+          // Try to play immediately
           const playPromise = audioRef.current.play();
+          setIsPlaying(true); // Set state immediately for instant UI feedback
+          
+          // Handle play promise in background
           if (playPromise !== undefined) {
-            try {
-              await playPromise;
-              setIsPlaying(true);
-            } catch (playErr) {
-              console.log('Play failed, trying fallback:', playErr);
-              // Fallback without waiting for initialization
-              setIsPlaying(true);
-            }
+            playPromise.catch(err => {
+              console.log('Play failed:', err);
+              setIsPlaying(false); // Revert state on failure
+            });
           }
         }
       } catch (err) {
@@ -115,7 +115,7 @@ const MusicPlayer = () => {
     }
   };
 
-  const switchTrack = async (index) => {
+  const switchTrack = (index) => {
     const wasPlaying = isPlaying;
     setIsPlaying(false);
     if (audioRef.current) {
@@ -125,10 +125,10 @@ const MusicPlayer = () => {
     setCurrentTrackIndex(index);
     
     // Auto-play new track if previous was playing
-    setTimeout(async () => {
+    setTimeout(() => {
       if (wasPlaying && audioRef.current) {
         try {
-          await audioRef.current.play();
+          audioRef.current.play();
           setIsPlaying(true);
         } catch (err) {
           console.log('Auto-play failed, user interaction required:', err);
@@ -154,8 +154,8 @@ const MusicPlayer = () => {
     }
   };
 
-  // Mobile-optimized touch handlers - simplified for immediate response
-  const handlePlayPause = async (e) => {
+  // Mobile-optimized touch handlers - immediate response
+  const handlePlayPause = (e) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -164,8 +164,8 @@ const MusicPlayer = () => {
       initializeAudio(); // Don't await - let it run in background
     }
     
-    // Immediate toggle for better UX
-    await togglePlay();
+    // Immediate toggle for better UX - no async
+    togglePlay();
   };
 
   const handlePrevTrack = (e) => {
@@ -316,6 +316,12 @@ const MusicPlayer = () => {
         <div className="player-info">
           <span className="player-text">{currentTrack.title}</span>
           <span className="artist-text">{currentTrack.artist}</span>
+          {!isPlaying && (
+            <span className="instruction-text">Tap to play music</span>
+          )}
+          {isPlaying && (
+            <span className="instruction-text">press to stop music</span>
+          )}
         </div>
         <div className="header-controls">
           {tracks.length > 1 && (
