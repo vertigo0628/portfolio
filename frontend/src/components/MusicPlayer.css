@@ -12,10 +12,16 @@
   gap: 10px;
   z-index: 999;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(52, 199, 89, 0.2);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 280px;
   cursor: move;
   user-select: none;
+  touch-action: none;
+}
+
+.music-player.expanded {
+  min-width: 320px;
+  padding: 16px 20px;
 }
 
 .music-player.dragging {
@@ -36,6 +42,33 @@
   gap: 16px;
 }
 
+.control-button.main-control {
+  background: linear-gradient(135deg, rgba(52, 199, 89, 0.2), rgba(52, 199, 89, 0.1));
+  border: 2px solid rgba(52, 199, 89, 0.5);
+  width: 48px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.control-button.main-control::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(52, 199, 89, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.control-button.main-control:active::before {
+  width: 100%;
+  height: 100%;
+}
+
 .control-button {
   background: rgba(52, 199, 89, 0.1);
   border: 1px solid rgba(52, 199, 89, 0.3);
@@ -47,7 +80,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
@@ -55,17 +88,187 @@
   background: rgba(52, 199, 89, 0.2);
   border-color: #34C759;
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
+  transform: translateY(-2px);
 }
 
 .control-button:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 
-.volume-control {
+.expand-button {
+  background: rgba(52, 199, 89, 0.1);
+  border: 1px solid rgba(52, 199, 89, 0.3);
+  color: #34C759;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.expand-button:hover {
+  background: rgba(52, 199, 89, 0.2);
+  border-color: #34C759;
+}
+
+.track-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 12px;
+}
+
+.track-button {
+  width: 32px;
+  height: 32px;
+  background: rgba(52, 199, 89, 0.15);
+}
+
+.track-info {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: center;
+}
+
+.track-list {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(26, 35, 50, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(52, 199, 89, 0.3);
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1001;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.track-list-header {
+  padding: 12px 16px;
+  color: #34C759;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(52, 199, 89, 0.05);
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.track-item:hover {
+  background: rgba(52, 199, 89, 0.1);
+}
+
+.track-item.active {
+  background: rgba(52, 199, 89, 0.2);
+  border-left: 3px solid #34C759;
+}
+
+.track-item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.track-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.track-artist {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.track-duration {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 12px;
+}
+
+.volume-control.expanded {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.track-list {
+  animation: slideUp 0.3s ease;
+}
+
+.volume-percentage {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 35px;
+  text-align: right;
+}
+
+.volume-tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 35, 50, 0.95);
+  border: 1px solid rgba(52, 199, 89, 0.5);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #34C759;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  animation: tooltipFade 0.3s ease;
+}
+
+@keyframes tooltipFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.volume-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: rgba(52, 199, 89, 0.5);
 }
 
 .volume-slider {
@@ -114,10 +317,44 @@
 
 .player-info {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
   padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.artist-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.track-list-button {
+  background: rgba(52, 199, 89, 0.1);
+  border: 1px solid rgba(52, 199, 89, 0.3);
+  color: #34C759;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.track-list-button:hover {
+  background: rgba(52, 199, 89, 0.2);
+  border-color: #34C759;
 }
 
 .player-text {
@@ -134,6 +371,15 @@
     padding: 12px 16px;
   }
   
+  .music-player.expanded {
+    min-width: 280px;
+  }
+  
+  .control-button.main-control {
+    width: 44px;
+    height: 44px;
+  }
+  
   .control-button {
     width: 36px;
     height: 36px;
@@ -141,5 +387,9 @@
   
   .player-text {
     font-size: 12px;
+  }
+  
+  .volume-percentage {
+    font-size: 11px;
   }
 }
