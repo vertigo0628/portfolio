@@ -68,9 +68,9 @@ const MusicPlayer = () => {
       previewDuration: 30
     },
     {
-      title: "shanghai Beach",
+      title: "Shanghai Beach",
       artist: "Frances yip",
-      file: "/music/shanghai Beach.mp3",
+      file: "/music/Shanghai Beach.mp3",
       duration: "3:14",
       previewDuration: 60
     }
