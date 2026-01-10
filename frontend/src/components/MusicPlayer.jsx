@@ -142,6 +142,28 @@ const MusicPlayer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run once on mount
 
+  // Initialize audio context for mobile browsers
+  const initializeAudio = () => {
+    if (audioInitialized) return;
+
+    try {
+      // Create and resume audio context for mobile
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext && !audioContextRef.current) {
+        audioContextRef.current = new AudioContext();
+        audioContextRef.current.resume();
+      }
+
+      // Load audio element
+      if (audioRef.current) {
+        audioRef.current.load();
+        setAudioInitialized(true);
+      }
+    } catch (err) {
+      console.log('Audio initialization failed:', err);
+    }
+  };
+
   const togglePlay = async () => {
     if (!audioRef.current) return;
 
