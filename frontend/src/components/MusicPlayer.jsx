@@ -22,30 +22,65 @@ const MusicPlayer = () => {
 
   // Music tracks configuration
   const tracks = [
+
+
     {
-      title: "Background Music",
-      artist: "Portfolio Theme",
-      file: "/music/background.mp3",
-      duration: "3:45"
+      title: "Glorious",
+      artist: "",
+      file: "/music/Glorious.mp3", 
+      duration: "3:40",
+      previewDuration: 60
+    },
+    {
+      title: "forver-young",
+      artist: "ALPHAVILLE",
+      file: "/music/forever-young.mp3",
+      duration: "3:45",
+      previewDuration: 30
     },
     {
       title: "Waiting for Love",
-      artist: "Portfolio Theme", 
+      artist: "Avicci", 
       file: "/music/Waiting for Love.mp3",
-      duration: "3:56"
+      duration: "3:56",
+      previewDuration: 30
     },
     {
       title: "Anxiety",
-      artist: "Portfolio Theme",
+      artist: "Doechii",
       file: "/music/Anxiety.mp3", 
-      duration: "4:20"
+      duration: "4:09",
+      previewDuration: 20
     },
+    
+    {
+      title: "Black and Yellow",
+      artist: "",
+      file: "/music/Black and Yellow.mp3", 
+      duration: "3:38",
+      previewDuration: 60
+    },
+    {
+      title: "cough_odo_",
+      artist: "remix",
+      file: "/music/cough_odo_.mp3", 
+      duration: "6:59",
+      previewDuration: 30
+    },
+    {
+      title: "shanghai Beach",
+      artist: "Frances yip",
+      file: "/music/shanghai Beach.mp3", 
+      duration: "3:14",
+      previewDuration: 60
+    }
     // Add more tracks here by following this format:
     // {
     //   title: "Your Track Name",
     //   artist: "Artist Name",
     //   file: "/music/your-track.mp3",
-    //   duration: "4:20"
+    //   duration: "4:20",
+      //   previewDuration: 30
     // }
   ];
 
@@ -56,6 +91,14 @@ const MusicPlayer = () => {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+
+  // Auto-play music on component mount
+  useEffect(() => {
+    if (!isPlaying) {
+      togglePlay();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Initialize audio context for mobile browsers
   const initializeAudio = () => {
@@ -283,6 +326,25 @@ const MusicPlayer = () => {
     }
   }, [isDragging]);
 
+  // Stop playback after preview duration
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      const defaultPreview = 30;
+      const preview = currentTrack.previewDuration ?? defaultPreview;
+      if (preview && audio.currentTime >= preview) {
+        nextTrack(); // Move to next track automatically after preview
+      }
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [currentTrack, isPlaying]);
+
   return (
     <div 
       ref={playerRef}
@@ -303,7 +365,7 @@ const MusicPlayer = () => {
           }
         }}
         key={currentTrackIndex}
-        preload="none" // Don't preload until user interaction
+        preload="auto" // Don't preload until user interaction
         crossOrigin="anonymous" // Help with mobile CORS issues
       >
         <source src={currentTrack.file} type="audio/mpeg" />

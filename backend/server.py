@@ -10,6 +10,7 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 import smtplib
+import asyncio
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -85,7 +86,8 @@ async def send_contact_message(message: ContactMessageCreate):
         result = await db.contact_messages.insert_one(message_dict)
         
         # Send email notification
-        await send_email_notification(message)
+        loop = asyncio.get_running_loop()
+        await loop.run_in_executor(None, _send_sync, message)
         
         return {
             "success": True,
@@ -108,7 +110,7 @@ async def get_status_checks():
     
     return status_checks
 
-async def send_email_notification(message: ContactMessageCreate):
+def _send_sync(message: ContactMessageCreate):
     try:
         # Email configuration
         smtp_server = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
