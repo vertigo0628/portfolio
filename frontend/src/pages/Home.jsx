@@ -1,6 +1,5 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { portfolioData } from '../mock';
-const Spline = lazy(() => import('@splinetool/react-spline'));
 import WelcomePopup from '../components/WelcomePopup';
 import MusicPlayer from '../components/MusicPlayer';
 import { Button } from '../components/ui/button';
@@ -13,6 +12,9 @@ import {
   MapPin, GraduationCap, Briefcase, Loader2
 } from 'lucide-react';
 import './Home.css';
+
+// Lazy load Spline for better mobile performance
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Home = () => {
   const [showWelcome, setShowWelcome] = useState(false);
