@@ -12,11 +12,12 @@
   gap: 10px;
   z-index: 999;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(52, 199, 89, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   min-width: 280px;
   cursor: move;
   user-select: none;
-  touch-action: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .music-player.expanded {
@@ -80,19 +81,21 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .control-button:hover {
   background: rgba(52, 199, 89, 0.2);
   border-color: #34C759;
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
-  transform: translateY(-2px);
 }
 
 .control-button:active {
-  transform: translateY(0) scale(0.95);
+  transform: scale(0.95);
+  background: rgba(52, 199, 89, 0.3);
 }
 
 .expand-button {
@@ -218,13 +221,27 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .track-list {
@@ -257,8 +274,15 @@
 }
 
 @keyframes tooltipFade {
-  from { opacity: 0; transform: translateX(-50%) translateY(5px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .volume-tooltip::after {
@@ -349,9 +373,17 @@
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
 }
 
 .track-list-button {
@@ -385,27 +417,71 @@
     right: 16px;
     min-width: 240px;
     padding: 12px 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
-  
+
   .music-player.expanded {
     min-width: 280px;
   }
-  
+
   .control-button.main-control {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .control-button {
     width: 44px;
     height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
-  
-  .control-button {
-    width: 36px;
-    height: 36px;
+
+  .track-button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
   }
-  
+
+  .expand-button,
+  .track-list-button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .track-item {
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .player-text {
     font-size: 12px;
   }
-  
+
   .volume-percentage {
     font-size: 11px;
+  }
+
+  .volume-slider {
+    height: 8px;
+    touch-action: manipulation;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .volume-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
   }
 }

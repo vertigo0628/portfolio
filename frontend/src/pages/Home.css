@@ -138,9 +138,12 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: var(--glow-green);
   }
+
   50% {
     box-shadow: 0 0 40px rgba(52, 199, 89, 0.6);
   }
@@ -235,6 +238,31 @@ body {
   height: 100%;
   overflow: visible;
   position: relative;
+}
+
+.spline-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 35, 50, 0.3);
+  border-radius: 20px;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(52, 199, 89, 0.2);
+  border-top-color: var(--accent-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Section Styles */
@@ -484,9 +512,12 @@ body {
 }
 
 @keyframes blink {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -638,48 +669,102 @@ body {
     width: 100vw;
     overflow-x: hidden;
   }
-  
+
   .portfolio-header {
     padding: 15px 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
-  
+
   .header-content {
     padding: 0 20px;
     max-width: 100vw;
   }
-  
+
   .logo-text {
     font-size: 18px;
   }
-  
+
   .nav-menu {
     gap: 20px;
   }
-  
+
   .nav-link {
     font-size: 14px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
+  /* Hide Spline 3D on mobile for performance */
+  .hero-right {
+    height: 300px;
+  }
+
+  .spline-container {
+    display: none;
+  }
+
+  /* Show a gradient placeholder instead */
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(52, 199, 89, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
   .vtexter-features-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .vtexter-content {
     padding: 25px;
   }
-  
+
   .feature-content {
     padding: 20px;
   }
-  
+
   .tech-badges {
     gap: 8px;
   }
-  
+
   .tech-badge {
     font-size: 11px;
     padding: 3px 8px;
+  }
+
+  /* Mobile button optimizations */
+  .btn-primary,
+  .btn-secondary,
+  .btn-download,
+  .btn-submit {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 48px;
+  }
+
+  /* Reduce animations on mobile */
+  .info-card,
+  .project-card,
+  .service-card,
+  .blog-card,
+  .testimonial-card,
+  .feature-card {
+    transition: border-color 0.2s ease;
+  }
+
+  .info-card:hover,
+  .project-card:hover,
+  .service-card:hover,
+  .blog-card:hover,
+  .testimonial-card:hover,
+  .feature-card:hover {
+    transform: none;
   }
 }
 
@@ -1033,8 +1118,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-group {
@@ -1171,16 +1263,17 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+
   .hero-content,
   .about-grid,
   .contact-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .hero-right {
     height: 500px;
   }
-  
+
   .projects-grid,
   .services-grid,
   .blog-grid,
@@ -1195,51 +1288,51 @@ body {
     width: 100vw;
     overflow-x: hidden;
   }
-  
+
   .header-content {
     padding: 0 15px;
   }
-  
+
   .logo-text {
     font-size: 16px;
     letter-spacing: 1px;
   }
-  
+
   .nav-menu {
     gap: 15px;
   }
-  
+
   .nav-link {
     font-size: 12px;
   }
-  
+
   .header-content,
   .section-content,
   .footer-content {
     padding: 0 24px;
   }
-  
+
   .nav-menu {
     display: none;
   }
-  
+
   .hero-content {
     padding: 40px 24px;
     gap: 40px;
   }
-  
+
   .hero-title {
     font-size: 36px;
   }
-  
+
   .section-title {
     font-size: 32px;
   }
-  
+
   .hero-buttons {
     flex-direction: column;
   }
-  
+
   .btn-primary,
   .btn-secondary,
   .btn-download,
@@ -1247,23 +1340,23 @@ body {
     width: 100%;
     justify-content: center;
   }
-  
+
   .about-cards {
     grid-template-columns: 1fr;
   }
-  
+
   .projects-grid,
   .services-grid,
   .blog-grid,
   .testimonials-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .footer-content {
     flex-direction: column;
     gap: 32px;
   }
-  
+
   .footer-right {
     align-items: flex-start;
   }

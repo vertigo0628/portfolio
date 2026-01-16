@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { portfolioData } from '../mock';
-import Spline from '@splinetool/react-spline';
+const Spline = lazy(() => import('@splinetool/react-spline'));
 import WelcomePopup from '../components/WelcomePopup';
 import MusicPlayer from '../components/MusicPlayer';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Separator } from '../components/ui/separator';
-import { 
-  Mail, Phone, Github, Linkedin, Instagram, Download, 
+import {
+  Mail, Phone, Github, Linkedin, Instagram, Download,
   Code2, Shield, Palette, ArrowRight, Star, MessageSquare,
   MapPin, GraduationCap, Briefcase, Loader2
 } from 'lucide-react';
@@ -65,11 +65,11 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setFormStatus({ loading: true, success: false, error: '' });
-    
+
     try {
       const response = await fetch('http://localhost:8000/api/contact', {
         method: 'POST',
@@ -78,13 +78,13 @@ const Home = () => {
         },
         body: JSON.stringify(formData)
       });
-      
+
       const result = await response.json();
-      
+
       if (response.ok) {
         setFormStatus({ loading: false, success: true, error: '' });
         setFormData({ name: '', email: '', message: '' });
-        
+
         // Reset success message after 5 seconds
         setTimeout(() => {
           setFormStatus(prev => ({ ...prev, success: false }));
@@ -107,7 +107,7 @@ EMAIL:${portfolioData.contact.emails[0]}
 TEL;TYPE=CELL:${portfolioData.contact.whatsapp}
 URL:${portfolioData.contact.linkedin}
 END:VCARD`;
-    
+
     const blob = new Blob([vcard], { type: 'text/vcard' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -168,7 +168,13 @@ END:VCARD`;
           </div>
           <div className="hero-right">
             <div className="spline-container">
-              <Spline scene="https://prod.spline.design/NbVmy6DPLhY-5Lvg/scene.splinecode" />
+              <Suspense fallback={
+                <div className="spline-loading">
+                  <div className="loading-spinner"></div>
+                </div>
+              }>
+                <Spline scene="https://prod.spline.design/NbVmy6DPLhY-5Lvg/scene.splinecode" />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -263,8 +269,8 @@ END:VCARD`;
                 </div>
                 <h3 className="project-title">VTexter - Secure Real-Time Messaging Platform</h3>
                 <p className="project-description">
-                  A comprehensive Android messaging application built with modern technologies, featuring real-time communication, 
-                  advanced media handling, and robust security measures. VTexter represents the culmination of mobile development 
+                  A comprehensive Android messaging application built with modern technologies, featuring real-time communication,
+                  advanced media handling, and robust security measures. VTexter represents the culmination of mobile development
                   expertise, combining elegant UI/UX design with powerful backend integration.
                 </p>
                 <div className="vtexter-tech-stack">
@@ -375,8 +381,8 @@ END:VCARD`;
                   <span className="status-text">Actively Developed</span>
                 </div>
                 <p className="status-description">
-                  VTexter is continuously evolving with new features and improvements based on modern mobile development 
-                  best practices and user feedback. The app demonstrates expertise in full-stack Android development, 
+                  VTexter is continuously evolving with new features and improvements based on modern mobile development
+                  best practices and user feedback. The app demonstrates expertise in full-stack Android development,
                   from UI design to backend integration and security implementation.
                 </p>
               </CardContent>
@@ -530,56 +536,56 @@ END:VCARD`;
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label className="form-label">Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="form-input" 
-                      placeholder="Your name" 
+                      className="form-input"
+                      placeholder="Your name"
                       disabled={formStatus.loading}
                     />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Email</label>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="form-input" 
-                      placeholder="your.email@example.com" 
+                      className="form-input"
+                      placeholder="your.email@example.com"
                       disabled={formStatus.loading}
                     />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Message</label>
-                    <textarea 
+                    <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="form-textarea" 
-                      rows="4" 
+                      className="form-textarea"
+                      rows="4"
                       placeholder="Tell me about your project..."
                       disabled={formStatus.loading}
                     ></textarea>
                   </div>
-                  
+
                   {formStatus.error && (
                     <div className="form-error">
                       {formStatus.error}
                     </div>
                   )}
-                  
+
                   {formStatus.success && (
                     <div className="form-success">
                       Message sent successfully! I'll get back to you soon.
                     </div>
                   )}
-                  
-                  <Button 
-                    type="submit" 
-                    className="btn-submit" 
+
+                  <Button
+                    type="submit"
+                    className="btn-submit"
                     disabled={formStatus.loading}
                   >
                     {formStatus.loading ? (

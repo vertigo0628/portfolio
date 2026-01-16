@@ -437,7 +437,6 @@ const MusicPlayer = () => {
         <button
           className="control-button main-control"
           onClick={handlePlayPause}
-          onTouchStart={handlePlayPause}
           title={isPlaying ? 'Pause' : 'Play'}
         >
           {isPlaying ? <Pause size={20} /> : <Play size={20} />}
@@ -450,7 +449,6 @@ const MusicPlayer = () => {
                 <button
                   className="control-button track-button"
                   onClick={handlePrevTrack}
-                  onTouchStart={handlePrevTrack}
                   title="Previous track"
                 >
                   <ChevronUp size={16} />
@@ -461,7 +459,6 @@ const MusicPlayer = () => {
                 <button
                   className="control-button track-button"
                   onClick={handleNextTrack}
-                  onTouchStart={handleNextTrack}
                   title="Next track"
                 >
                   <ChevronDown size={16} />
@@ -473,7 +470,6 @@ const MusicPlayer = () => {
               <button
                 className="control-button"
                 onClick={handleMuteToggle}
-                onTouchStart={handleMuteToggle}
                 title={isMuted ? 'Unmute' : 'Mute'}
               >
                 {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
