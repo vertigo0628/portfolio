@@ -92,53 +92,74 @@ const MusicPlayer = () => {
     }
   }, [volume]);
 
-  // Auto-play music on component mount with robust fallback
+  // Auto-play music immediately on first screen touch/click
   useEffect(() => {
-    const playAudio = async () => {
-      if (!audioRef.current) return;
+    let hasPlayed = false;
+
+    const startPlayback = async () => {
+      if (hasPlayed || !audioRef.current) return;
+      hasPlayed = true;
 
       try {
-        // Try to play immediately
+        // Initialize AudioContext for mobile (required before play)
+        if (!audioContextRef.current) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            audioContextRef.current = new AudioContext();
+          }
+        }
+
+        // Resume AudioContext if suspended
+        if (audioContextRef.current?.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
+
+        // Pre-load and play
+        audioRef.current.load();
         await audioRef.current.play();
         setIsPlaying(true);
+        setAudioInitialized(true);
+
+        // Remove all listeners once successful
+        removeListeners();
       } catch (err) {
-        console.log("Autoplay blocked, waiting for user interaction:", err);
-        setIsPlaying(false);
-
-        // If blocked, add one-time listener for any user interaction
-        const enableAudio = async () => {
-          if (audioRef.current) {
-            try {
-              // Initialize AudioContext if needed (for mobile)
-              if (!audioContextRef.current) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (AudioContext) {
-                  audioContextRef.current = new AudioContext();
-                  audioContextRef.current.resume();
-                }
-              }
-
-              await audioRef.current.play();
-              setIsPlaying(true);
-
-              // Remove listeners once successful
-              ['click', 'touchstart', 'keydown'].forEach(event =>
-                document.removeEventListener(event, enableAudio, { capture: true })
-              );
-            } catch (playErr) {
-              console.log("Play on interaction failed:", playErr);
-            }
-          }
-        };
-
-        // Capture events in the capture phase to ensure we catch them early
-        ['click', 'touchstart', 'keydown'].forEach(event =>
-          document.addEventListener(event, enableAudio, { once: true, capture: true })
-        );
+        console.log('Playback failed:', err);
+        hasPlayed = false; // Allow retry on next interaction
       }
     };
 
-    playAudio();
+    const removeListeners = () => {
+      ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'].forEach(event => {
+        document.removeEventListener(event, startPlayback, { capture: true });
+      });
+    };
+
+    // Try immediate autoplay first
+    const tryAutoplay = async () => {
+      if (!audioRef.current) return;
+
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setAudioInitialized(true);
+        hasPlayed = true;
+      } catch (err) {
+        console.log('Autoplay blocked, waiting for first touch:', err);
+
+        // Add listeners for first interaction - capture phase for earliest detection
+        ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'].forEach(event => {
+          document.addEventListener(event, startPlayback, {
+            capture: true,
+            passive: event !== 'touchstart', // touchstart needs non-passive for immediate response
+            once: false // We'll remove manually after success
+          });
+        });
+      }
+    };
+
+    tryAutoplay();
+
+    return () => removeListeners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run once on mount
 
