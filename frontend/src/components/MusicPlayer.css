@@ -412,76 +412,143 @@
 }
 
 @media (max-width: 768px) {
+
+  /* Fixed status bar at top on mobile */
   .music-player {
-    bottom: 16px;
-    right: 16px;
-    min-width: 240px;
-    padding: 12px 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: 100%;
+    min-width: unset;
+    border-radius: 0;
+    padding: 8px 16px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    transform: none !important;
+    cursor: default;
+    z-index: 1001;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: none;
+    border-bottom: 1px solid rgba(52, 199, 89, 0.3);
+  }
+
+  .music-player.dragging {
+    transform: none !important;
+    cursor: default;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   }
 
   .music-player.expanded {
-    min-width: 280px;
+    min-width: unset;
+    padding: 8px 16px;
+  }
+
+  /* Hide drag handle on mobile */
+  .drag-handle {
+    display: none;
+  }
+
+  .player-header {
+    flex: 1;
+    border-top: none;
+    padding-top: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .player-info {
+    flex: 1;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .player-text {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+
+  .artist-text {
+    display: none;
+  }
+
+  .instruction-text {
+    display: none;
+  }
+
+  .header-controls {
+    gap: 4px;
+  }
+
+  .player-controls {
+    gap: 8px;
   }
 
   .control-button.main-control {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    min-height: 48px;
-  }
-
-  .control-button {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-  }
-
-  .track-button {
     width: 40px;
     height: 40px;
     min-width: 40px;
     min-height: 40px;
   }
 
-  .expand-button,
-  .track-list-button {
+  .control-button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .track-button {
     width: 32px;
     height: 32px;
     min-width: 32px;
     min-height: 32px;
+  }
+
+  .expand-button,
+  .track-list-button {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .track-controls {
+    margin-right: 0;
+  }
+
+  .track-info {
+    font-size: 10px;
+    min-width: 30px;
+  }
+
+  .volume-control.expanded {
+    display: none;
+  }
+
+  .track-list {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    border-radius: 0 0 8px 8px;
+    max-height: 250px;
   }
 
   .track-item {
-    min-height: 48px;
+    min-height: 44px;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .player-text {
-    font-size: 12px;
-  }
-
-  .volume-percentage {
-    font-size: 11px;
-  }
-
-  .volume-slider {
-    height: 8px;
-    touch-action: manipulation;
-  }
-
-  .volume-slider::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
-  }
-
-  .volume-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
   }
 }
