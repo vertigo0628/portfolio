@@ -92,6 +92,14 @@ const MusicPlayer = () => {
     }
   }, [volume]);
 
+  // Preload audio on mount for instant playback
+  useEffect(() => {
+    if (audioRef.current) {
+      // Force preload the audio file immediately
+      audioRef.current.load();
+    }
+  }, [currentTrackIndex]);
+
   // Auto-play music immediately on first screen touch/click
   useEffect(() => {
     let hasPlayed = false;
@@ -101,21 +109,18 @@ const MusicPlayer = () => {
       hasPlayed = true;
 
       try {
-        // Initialize AudioContext for mobile (required before play)
+        // Initialize AudioContext in parallel (don't await)
         if (!audioContextRef.current) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
             audioContextRef.current = new AudioContext();
+            audioContextRef.current.resume(); // Don't await - run in parallel
           }
+        } else if (audioContextRef.current.state === 'suspended') {
+          audioContextRef.current.resume(); // Don't await - run in parallel
         }
 
-        // Resume AudioContext if suspended
-        if (audioContextRef.current?.state === 'suspended') {
-          await audioContextRef.current.resume();
-        }
-
-        // Pre-load and play
-        audioRef.current.load();
+        // Play immediately - audio is already preloaded
         await audioRef.current.play();
         setIsPlaying(true);
         setAudioInitialized(true);
