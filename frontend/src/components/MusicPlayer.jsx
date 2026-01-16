@@ -13,6 +13,7 @@ const MusicPlayer = () => {
   const [showTrackList, setShowTrackList] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [audioInitialized, setAudioInitialized] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
   const audioRef = useRef(null);
   const playerRef = useRef(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
@@ -95,6 +96,7 @@ const MusicPlayer = () => {
   // Preload audio on mount for instant playback
   useEffect(() => {
     if (audioRef.current) {
+      setAudioReady(false);
       // Force preload the audio file immediately
       audioRef.current.load();
     }
@@ -114,16 +116,30 @@ const MusicPlayer = () => {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
             audioContextRef.current = new AudioContext();
-            audioContextRef.current.resume(); // Don't await - run in parallel
+            audioContextRef.current.resume();
           }
         } else if (audioContextRef.current.state === 'suspended') {
-          audioContextRef.current.resume(); // Don't await - run in parallel
+          audioContextRef.current.resume();
         }
 
-        // Play immediately - audio is already preloaded
+        // Wait for audio to be ready if not already
+        if (audioRef.current.readyState < 3) {
+          // HAVE_FUTURE_DATA = 3, HAVE_ENOUGH_DATA = 4
+          await new Promise((resolve) => {
+            const onCanPlay = () => {
+              audioRef.current?.removeEventListener('canplaythrough', onCanPlay);
+              resolve();
+            };
+            audioRef.current?.addEventListener('canplaythrough', onCanPlay);
+            // Timeout fallback - try playing after 500ms even if not fully buffered
+            setTimeout(resolve, 500);
+          });
+        }
+
         await audioRef.current.play();
         setIsPlaying(true);
         setAudioInitialized(true);
+        setAudioReady(true);
 
         // Remove all listeners once successful
         removeListeners();
@@ -418,9 +434,12 @@ const MusicPlayer = () => {
             nextTrack();
           }
         }}
+        onCanPlayThrough={() => setAudioReady(true)}
+        onWaiting={() => setAudioReady(false)}
+        onPlaying={() => setAudioReady(true)}
         key={currentTrackIndex}
         preload="auto"
-        crossOrigin="anonymous" // Help with mobile CORS issues
+        crossOrigin="anonymous"
       >
         <source src={currentTrack.file} type="audio/mpeg" />
       </audio>

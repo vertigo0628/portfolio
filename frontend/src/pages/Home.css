@@ -695,25 +695,9 @@ body {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Hide Spline 3D on mobile for performance */
+  /* Reduced height for mobile but Spline still visible */
   .hero-right {
-    height: 300px;
-  }
-
-  .spline-container {
-    display: none;
-  }
-
-  /* Show a gradient placeholder instead */
-  .hero-right::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, rgba(52, 199, 89, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
+    height: 350px;
   }
 
   .vtexter-features-grid {
