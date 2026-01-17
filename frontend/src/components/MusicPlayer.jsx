@@ -111,31 +111,20 @@ const MusicPlayer = () => {
       hasPlayed = true;
 
       try {
-        // Initialize AudioContext in parallel (don't await)
+        // Initialize AudioContext for mobile
         if (!audioContextRef.current) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
             audioContextRef.current = new AudioContext();
-            audioContextRef.current.resume();
           }
-        } else if (audioContextRef.current.state === 'suspended') {
+        }
+
+        // Resume if suspended
+        if (audioContextRef.current?.state === 'suspended') {
           audioContextRef.current.resume();
         }
 
-        // Wait for audio to be ready if not already
-        if (audioRef.current.readyState < 3) {
-          // HAVE_FUTURE_DATA = 3, HAVE_ENOUGH_DATA = 4
-          await new Promise((resolve) => {
-            const onCanPlay = () => {
-              audioRef.current?.removeEventListener('canplaythrough', onCanPlay);
-              resolve();
-            };
-            audioRef.current?.addEventListener('canplaythrough', onCanPlay);
-            // Timeout fallback - try playing after 500ms even if not fully buffered
-            setTimeout(resolve, 500);
-          });
-        }
-
+        // Play immediately
         await audioRef.current.play();
         setIsPlaying(true);
         setAudioInitialized(true);
@@ -150,8 +139,10 @@ const MusicPlayer = () => {
     };
 
     const removeListeners = () => {
-      ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'].forEach(event => {
+      const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+      events.forEach(event => {
         document.removeEventListener(event, startPlayback, { capture: true });
+        window.removeEventListener(event, startPlayback, { capture: true });
       });
     };
 
@@ -167,13 +158,11 @@ const MusicPlayer = () => {
       } catch (err) {
         console.log('Autoplay blocked, waiting for first touch:', err);
 
-        // Add listeners for first interaction - capture phase for earliest detection
-        ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'].forEach(event => {
-          document.addEventListener(event, startPlayback, {
-            capture: true,
-            passive: event !== 'touchstart', // touchstart needs non-passive for immediate response
-            once: false // We'll remove manually after success
-          });
+        // Add listeners on both document and window for maximum coverage
+        const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+        events.forEach(event => {
+          document.addEventListener(event, startPlayback, { capture: true, passive: true });
+          window.addEventListener(event, startPlayback, { capture: true, passive: true });
         });
       }
     };

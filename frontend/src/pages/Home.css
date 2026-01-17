@@ -704,7 +704,7 @@ body {
     height: 350px;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .spline-container {
@@ -714,6 +714,7 @@ body {
     width: 500px;
     height: 500px;
     transform: translate(-50%, -50%);
+    overflow: visible;
   }
 
   .spline-container canvas {
