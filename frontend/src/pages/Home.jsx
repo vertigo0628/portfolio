@@ -139,7 +139,16 @@ END:VCARD`;
       <header className="portfolio-header">
         <div className="header-content">
           <div className="logo-section">
-            <span className="logo-text">{portfolioData.personal.company}</span>
+            <div className="flex items-center gap-2">
+              {portfolioData.personal.companyLogo && (
+                <img
+                  src={portfolioData.personal.companyLogo}
+                  alt="Company Logo"
+                  className="h-8 w-auto object-contain"
+                />
+              )}
+              <span className="logo-text">{portfolioData.personal.company}</span>
+            </div>
             <div className="cmd-k-badge" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}>
               <span className="cmd-k-text">⌘ K</span>
             </div>
