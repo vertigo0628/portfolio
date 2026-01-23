@@ -15,6 +15,7 @@ import ScrollAnimation from '../components/ScrollAnimation';
 import SkillsMarquee from '../components/SkillsMarquee';
 import CommandPalette from '../components/CommandPalette';
 import GithubActivity from '../components/GithubActivity';
+import GithubProjects from '../components/GithubProjects';
 import DuetCastCaseStudy from '../components/DuetCastCaseStudy';
 import Background3D from '../components/Background3D';
 import './Home.css';
@@ -238,6 +239,7 @@ END:VCARD`;
             </ScrollAnimation>
             <div style={{ marginTop: '20px' }}>
               <GithubActivity username={portfolioData.contact.github} />
+              <GithubProjects username={portfolioData.contact.github} />
             </div>
           </div>
         </div>
