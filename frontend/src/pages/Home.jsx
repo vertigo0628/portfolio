@@ -11,6 +11,10 @@ import {
   Code2, Shield, Palette, ArrowRight, Star, MessageSquare,
   MapPin, GraduationCap, Briefcase, Loader2, Video, Users, Radio, Monitor, Wifi, ExternalLink
 } from 'lucide-react';
+import ScrollAnimation from '../components/ScrollAnimation';
+import SkillsMarquee from '../components/SkillsMarquee';
+import CommandPalette from '../components/CommandPalette';
+import GithubActivity from '../components/GithubActivity';
 import './Home.css';
 
 // Lazy load Spline for better mobile performance
@@ -123,6 +127,7 @@ END:VCARD`;
 
   return (
     <div className="portfolio-container">
+      <CommandPalette />
       <WelcomePopup show={showWelcome} onClose={() => setShowWelcome(false)} />
       <MusicPlayer />
 
@@ -131,6 +136,9 @@ END:VCARD`;
         <div className="header-content">
           <div className="logo-section">
             <span className="logo-text">{portfolioData.personal.company}</span>
+            <div className="cmd-k-badge" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}>
+              <span className="cmd-k-text">⌘ K</span>
+            </div>
           </div>
           <nav className="nav-menu">
             <a href="#about" className="nav-link">About</a>
@@ -186,12 +194,12 @@ END:VCARD`;
       {/* About Section */}
       <section id="about" className="about-section">
         <div className="section-content">
-          <div className="section-header">
+          <ScrollAnimation className="section-header">
             <h2 className="section-title">About Me</h2>
             <Separator className="title-separator" />
-          </div>
+          </ScrollAnimation>
           <div className="about-grid">
-            <div className="about-bio">
+            <ScrollAnimation className="about-bio" delay={0.1}>
               <p className="bio-text">{portfolioData.personal.bio}</p>
               <div className="about-cards">
                 <Card className="info-card">
@@ -213,44 +221,20 @@ END:VCARD`;
                   </CardContent>
                 </Card>
               </div>
-            </div>
-            <div className="skills-section">
+            </ScrollAnimation>
+            <ScrollAnimation className="skills-section" delay={0.2}>
               <h3 className="skills-title">Technical Skills</h3>
               <div className="skills-category">
-                <h4 className="category-name">Mobile Development</h4>
-                <div className="skills-tags">
-                  {portfolioData.skills.mobile.map((skill, idx) => (
-                    <Badge key={idx} className="skill-badge">{skill}</Badge>
-                  ))}
-                </div>
+                <h4 className="category-name">Mobile & Software Development</h4>
+                <SkillsMarquee skills={[...portfolioData.skills.mobile, ...portfolioData.skills.software]} direction="left" speed={40} />
               </div>
               <div className="skills-category">
-                <h4 className="category-name">Software Development</h4>
-                <div className="skills-tags">
-                  {portfolioData.skills.software.map((skill, idx) => (
-                    <Badge key={idx} className="skill-badge">{skill}</Badge>
-                  ))}
-                </div>
+                <h4 className="category-name">Frontend, Design & Security</h4>
+                <SkillsMarquee skills={[...portfolioData.skills.frontend, ...portfolioData.skills.design, ...portfolioData.skills.security]} direction="right" speed={30} />
               </div>
-              <div className="skills-category">
-                <h4 className="category-name">Frontend & Design</h4>
-                <div className="skills-tags">
-                  {portfolioData.skills.frontend.map((skill, idx) => (
-                    <Badge key={idx} className="skill-badge">{skill}</Badge>
-                  ))}
-                  {portfolioData.skills.design.map((skill, idx) => (
-                    <Badge key={idx} className="skill-badge">{skill}</Badge>
-                  ))}
-                </div>
-              </div>
-              <div className="skills-category">
-                <h4 className="category-name">Cyber Security</h4>
-                <div className="skills-tags">
-                  {portfolioData.skills.security.map((skill, idx) => (
-                    <Badge key={idx} className="skill-badge skill-badge-security">{skill}</Badge>
-                  ))}
-                </div>
-              </div>
+            </ScrollAnimation>
+            <div style={{ marginTop: '20px' }}>
+              <GithubActivity username={portfolioData.contact.github} />
             </div>
           </div>
         </div>
@@ -258,7 +242,7 @@ END:VCARD`;
 
       {/* VTexter App Section */}
       <section id="vtexter" className="projects-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">VTexter - Advanced Messaging App</h2>
             <Separator className="title-separator" />
@@ -391,12 +375,12 @@ END:VCARD`;
               </CardContent>
             </Card>
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* DuetCast App Section */}
       <section id="duetcast" className="projects-section duetcast-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">DuetCast - Watch Together Platform</h2>
             <Separator className="title-separator" />
@@ -536,12 +520,12 @@ END:VCARD`;
               </CardContent>
             </Card>
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Design Process */}
       <section className="design-process-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">Design Process</h2>
             <Separator className="title-separator" />
@@ -557,12 +541,12 @@ END:VCARD`;
               </div>
             ))}
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Cyber Security Services */}
       <section id="security" className="security-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">Cyber Security Services</h2>
             <Separator className="title-separator" />
@@ -580,12 +564,12 @@ END:VCARD`;
               </Card>
             ))}
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Blog Section */}
       <section id="blog" className="blog-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">Latest Articles</h2>
             <Separator className="title-separator" />
@@ -605,12 +589,12 @@ END:VCARD`;
               </Card>
             ))}
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Testimonials */}
       <section className="testimonials-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">What Clients Say</h2>
             <Separator className="title-separator" />
@@ -635,12 +619,12 @@ END:VCARD`;
               </Card>
             ))}
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="contact-section">
-        <div className="section-content">
+        <ScrollAnimation className="section-content">
           <div className="section-header">
             <h2 className="section-title">Get In Touch</h2>
             <Separator className="title-separator" />
@@ -752,7 +736,7 @@ END:VCARD`;
               </CardContent>
             </Card>
           </div>
-        </div>
+        </ScrollAnimation>
       </section>
 
       {/* Footer */}
