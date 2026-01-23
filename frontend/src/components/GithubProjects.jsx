@@ -14,7 +14,7 @@ const GithubProjects = ({ username }) => {
     useEffect(() => {
         const fetchRepos = async () => {
             try {
-                const response = await axios.get(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6&type=owner`);
+                const response = await axios.get(`https://api.github.com/users/${username}/repos?sort=updated&per_page=4&type=owner`);
                 // Filter out forks if desired, or keep them. Sorting by updated suggests showing recent work.
                 // Let's sort by stars then updated to show best work first? Or just updated.
                 // User said "projects that i have", implying ownership.
@@ -22,7 +22,7 @@ const GithubProjects = ({ username }) => {
                     .filter(repo => !repo.fork) // Optional: filter out forks to show original work
                     .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)); // Sort by most recently updated
 
-                setRepos(sortedRepos.slice(0, 6)); // Top 6 recent non-fork repos
+                setRepos(sortedRepos.slice(0, 4)); // Top 4 recent non-fork repos
                 setLoading(false);
             } catch (err) {
                 console.error("Failed to fetch Github repos:", err);
