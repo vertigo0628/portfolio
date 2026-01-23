@@ -228,7 +228,20 @@ END:VCARD`;
                     <GraduationCap className="info-icon" />
                     <div>
                       <h4 className="info-title">Education</h4>
-                      <p className="info-text">{portfolioData.personal.university}</p>
+                      {portfolioData.personal.universityUrl ? (
+                        <a
+                          href={portfolioData.personal.universityUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="info-text hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1 group"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          {portfolioData.personal.university}
+                          <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </a>
+                      ) : (
+                        <p className="info-text">{portfolioData.personal.university}</p>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

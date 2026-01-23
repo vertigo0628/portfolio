@@ -5,6 +5,7 @@ export const portfolioData = {
     company: "vertiGO",
     location: "Nakuru City, Kenya",
     university: "Meru University of Science and Technology",
+    universityUrl: "https://www.must.ac.ke/",
     bio: "Hi, I'm Lewis Gitau, a passionate mobile and software developer, UI/UX designer, and cyber security consultant from Nakuru City, Kenya. I'm currently a student at Meru University of Science and Technology, where I'm honing my skills in tech. With a keen eye for design and a love for coding, I create innovative solutions that blend functionality and aesthetics. When I'm not coding, you can find me exploring new tech trends, reading about cyber security, or sipping coffee.",
     initials: "LG",
     profileImage: "/profile.jpg", // Place your profile.jpg in the public/ folder
