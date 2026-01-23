@@ -769,7 +769,16 @@ END:VCARD`;
       <footer className="portfolio-footer">
         <div className="footer-content">
           <div className="footer-left">
-            <span className="footer-logo">{portfolioData.personal.company}</span>
+            <div className="flex items-center gap-2 mb-2">
+              {portfolioData.personal.companyLogo && (
+                <img
+                  src={portfolioData.personal.companyLogo}
+                  alt="Company Logo"
+                  className="h-6 w-auto object-contain opacity-80"
+                />
+              )}
+              <span className="footer-logo" style={{ marginBottom: 0 }}>{portfolioData.personal.company}</span>
+            </div>
             <p className="footer-text">Building innovative solutions with security in mind.</p>
           </div>
           <div className="footer-right">
