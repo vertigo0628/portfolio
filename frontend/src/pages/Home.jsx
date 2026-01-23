@@ -15,6 +15,7 @@ import ScrollAnimation from '../components/ScrollAnimation';
 import SkillsMarquee from '../components/SkillsMarquee';
 import CommandPalette from '../components/CommandPalette';
 import GithubActivity from '../components/GithubActivity';
+import DuetCastCaseStudy from '../components/DuetCastCaseStudy';
 import './Home.css';
 
 // Lazy load Spline for better mobile performance
@@ -520,6 +521,7 @@ END:VCARD`;
               </CardContent>
             </Card>
           </div>
+          <DuetCastCaseStudy data={portfolioData.duetCastCaseStudy} />
         </ScrollAnimation>
       </section>
 

@@ -137,21 +137,21 @@ export const portfolioData = {
   testimonials: [
     {
       id: 1,
-      name: "Sarah Kimani",
+      name: "John Kanyara",
       role: "CTO at TechStart Kenya",
       content: "Lewis delivered an exceptional mobile app that exceeded our expectations. His attention to detail and security-first approach made all the difference.",
       rating: 5
     },
     {
       id: 2,
-      name: "David Omondi",
+      name: "Joseph Ng'ang'a",
       role: "Founder, SecureNet Solutions",
       content: "Outstanding penetration testing work! Lewis identified critical vulnerabilities we didn't know existed. His professionalism and expertise are top-notch.",
       rating: 5
     },
     {
       id: 3,
-      name: "Emily Wanjiru",
+      name: "Irene Wanjiru",
       role: "Product Manager at InnovateLabs",
       content: "The UI/UX designs Lewis created transformed our product. User engagement increased by 40% after implementing his designs. Highly recommended!",
       rating: 5
@@ -195,5 +195,50 @@ export const portfolioData = {
       category: "Backend",
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2074&auto=format&fit=crop"
     }
-  ]
+  ],
+
+  duetCastCaseStudy: {
+    title: "Under the Hood: DuetCast's Real-Time Engine",
+    introduction: "Building a synchronized streaming platform requires solving two complex problems: low-latency peer-to-peer data transfer and precise playback synchronization across different network conditions.",
+    architecture: {
+      title: "WebRTC Mesh Architecture",
+      description: "DuetCast uses a pure mesh network topology where every peer connects directly to every other peer. This eliminates the bandwidth costs of a central media server (SFU/MCU) while ensuring the lowest possible latency for video streams.",
+      diagram: "Host <-> Signaling Server (Firebase) <-> Viewer",
+      points: [
+        "RTCPeerConnection for direct video/audio/data channels",
+        "Firestore 'onSnapshot' listeners for real-time signaling exchanges",
+        "ICE Candidate trickle for faster connection establishment"
+      ]
+    },
+    syncLogic: {
+      title: "The 'Watch Together' Sync Algorithm",
+      description: "To ensure all users see the same frame at the same time, we implemented a custom synchronization protocol over WebRTC Data Channels.",
+      codeSnippet: `// Simplified Sync Hook
+useEffect(() => {
+  if (isViewer && incomingState) {
+    const latency = Date.now() - incomingState.timestamp;
+    const targetTime = incomingState.videoTime + (latency / 1000);
+    
+    if (Math.abs(videoRef.currentTime - targetTime) > 0.5) {
+       videoRef.currentTime = targetTime; // Snap if drift > 500ms
+    }
+  }
+}, [incomingState]);`,
+      mechanics: [
+        "Host broadcasts state packets (play/pause, timestamp) every 1000ms",
+        "Viewers calculate network latency `(Now - PacketTimestamp)` to predict current frame",
+        "Hybrid approach: Soft nudges for small drifts (<0.5s), hard seeks for large lags"
+      ]
+    },
+    challenges: [
+      {
+        title: "NAT Traversal & Ad Blockers",
+        description: "Many users sit behind strict firewalls or have ad blockers that interfere with Firestore connections. We implemented a fallback mechanism that detects 'ERR_BLOCKED_BY_CLIENT' and prompts users, alongside a public STUN server list to punch through symmetric NATs."
+      },
+      {
+        title: "Race Conditions in Signaling",
+        description: "Handling 'offer' and 'answer' collisions when two users try to connect simultaneously. We solved this using a strict 'Polite Peer' pattern where one side always yields to the other regarding connection renegotiation."
+      }
+    ]
+  }
 };
