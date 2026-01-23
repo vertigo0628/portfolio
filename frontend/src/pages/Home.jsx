@@ -159,8 +159,16 @@ END:VCARD`;
       <section className="hero-section">
         <div className="hero-content">
           <div className="hero-left">
-            <div className="profile-avatar">
-              <span className="avatar-initials">{portfolioData.personal.initials}</span>
+            <div className="profile-avatar" style={{ overflow: 'hidden' }}>
+              {portfolioData.personal.profileImage ? (
+                <img
+                  src={portfolioData.personal.profileImage}
+                  alt={portfolioData.personal.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <span className="avatar-initials">{portfolioData.personal.initials}</span>
+              )}
             </div>
             <h1 className="hero-title">
               {portfolioData.personal.name}
