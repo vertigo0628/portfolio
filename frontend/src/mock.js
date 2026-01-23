@@ -9,7 +9,7 @@ export const portfolioData = {
     initials: "LG",
     profileImage: null
   },
-  
+
   contact: {
     emails: ["lewisgitau0628@gmail.com", "vertigopoiuylkjhg@gmail.com"],
     whatsapp: "0748458310",
@@ -17,7 +17,7 @@ export const portfolioData = {
     github: "vertigo0628",
     linkedin: "https://www.linkedin.com/in/gitau-lewis-vertigo"
   },
-  
+
   skills: {
     mobile: ["Kotlin", "Dart", "Java", "React Native"],
     software: ["Python", "Node.js", "FastAPI"],
@@ -25,7 +25,7 @@ export const portfolioData = {
     security: ["Penetration Testing", "Vulnerability Assessment", "Security Audits"],
     design: ["UI/UX Design", "Figma", "Adobe XD", "Wireframing"]
   },
-  
+
   projects: [
     {
       id: 1,
@@ -82,7 +82,7 @@ export const portfolioData = {
       year: "2024"
     }
   ],
-  
+
   designProcess: [
     {
       step: 1,
@@ -110,7 +110,7 @@ export const portfolioData = {
       description: "Collaborating with developers, ensuring design integrity, and launching the product."
     }
   ],
-  
+
   cyberSecurityServices: [
     {
       title: "Penetration Testing",
@@ -133,7 +133,7 @@ export const portfolioData = {
       icon: "user-check"
     }
   ],
-  
+
   testimonials: [
     {
       id: 1,
@@ -157,31 +157,43 @@ export const portfolioData = {
       rating: 5
     }
   ],
-  
+
   blogPosts: [
     {
       id: 1,
-      title: "Modern Mobile App Security Best Practices",
-      excerpt: "Essential security measures every mobile developer should implement to protect user data and prevent common vulnerabilities.",
-      date: "2024-11-15",
-      readTime: "8 min read",
-      category: "Security"
+      title: "Building Scalable Real-Time Video Apps with Next.js 15 and WebRTC",
+      excerpt: "A deep dive into maximizing Peer-to-Peer performance, handling signaling with Firebase, and ensuring low-latency streaming in modern React applications.",
+      date: "2025-01-15",
+      readTime: "12 min read",
+      category: "Engineering",
+      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop"
     },
     {
       id: 2,
-      title: "The Future of UI/UX Design in 2024",
-      excerpt: "Exploring emerging design trends, from AI-powered interfaces to immersive 3D experiences that are shaping the future.",
-      date: "2024-10-28",
-      readTime: "6 min read",
-      category: "Design"
+      title: "Securing Android Applications: Implementing Biometrics & SQLCipher",
+      excerpt: "Essential security patterns for mobile developers. Learn how to encrypt local data via Room database and implement robust biometric authentication flows.",
+      date: "2024-12-10",
+      readTime: "8 min read",
+      category: "Security",
+      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=2070&auto=format&fit=crop"
     },
     {
       id: 3,
-      title: "Building Scalable APIs with FastAPI and Python",
-      excerpt: "A comprehensive guide to creating high-performance RESTful APIs using FastAPI, including best practices and optimization tips.",
-      date: "2024-10-12",
+      title: "The Rise of Bento Grids: Modernizing Portfolio Design in 2025",
+      excerpt: "Why the modular 'Bento' layout is taking over web design. A look at implementing responsive, grid-based layouts using CSS Grid and Framer Motion.",
+      date: "2024-11-28",
+      readTime: "6 min read",
+      category: "Design",
+      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop"
+    },
+    {
+      id: 4,
+      title: "Optimizing Firebase Firestore for High-Frequency Signaling",
+      excerpt: "Reducing costs and latency when using Firestore as a signaling server for WebRTC. Best practices for document structure and listener management.",
+      date: "2024-10-05",
       readTime: "10 min read",
-      category: "Development"
+      category: "Backend",
+      image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2074&auto=format&fit=crop"
     }
   ]
 };

@@ -576,7 +576,10 @@ END:VCARD`;
           </div>
           <div className="blog-grid">
             {portfolioData.blogPosts.map((post) => (
-              <Card key={post.id} className="blog-card">
+              <Card key={post.id} className="blog-card" onClick={() => window.open(`https://dev.to/search?q=${encodeURIComponent(post.title)}`, '_blank')} style={{ cursor: 'pointer' }}>
+                <div className="blog-image-wrapper">
+                  <img src={post.image} alt={post.title} className="blog-image" loading="lazy" />
+                </div>
                 <CardContent className="blog-content">
                   <Badge className="blog-category">{post.category}</Badge>
                   <h3 className="blog-title">{post.title}</h3>
