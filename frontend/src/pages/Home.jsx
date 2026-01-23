@@ -16,6 +16,7 @@ import SkillsMarquee from '../components/SkillsMarquee';
 import CommandPalette from '../components/CommandPalette';
 import GithubActivity from '../components/GithubActivity';
 import DuetCastCaseStudy from '../components/DuetCastCaseStudy';
+import Background3D from '../components/Background3D';
 import './Home.css';
 
 // Lazy load Spline for better mobile performance
@@ -128,6 +129,7 @@ END:VCARD`;
 
   return (
     <div className="portfolio-container">
+      <Background3D />
       <CommandPalette />
       <WelcomePopup show={showWelcome} onClose={() => setShowWelcome(false)} />
       <MusicPlayer />

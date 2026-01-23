@@ -27,7 +27,9 @@ body {
 
 .portfolio-container {
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
 /* Header */
@@ -1441,6 +1443,7 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
 /* Command Link Badge */
 .cmd-k-badge {
   display: inline-flex;
