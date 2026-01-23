@@ -9,7 +9,7 @@ import { Separator } from '../components/ui/separator';
 import {
   Mail, Phone, Github, Linkedin, Instagram, Download,
   Code2, Shield, Palette, ArrowRight, Star, MessageSquare,
-  MapPin, GraduationCap, Briefcase, Loader2
+  MapPin, GraduationCap, Briefcase, Loader2, Video, Users, Radio, Monitor, Wifi, ExternalLink
 } from 'lucide-react';
 import './Home.css';
 
@@ -135,6 +135,7 @@ END:VCARD`;
           <nav className="nav-menu">
             <a href="#about" className="nav-link">About</a>
             <a href="#vtexter" className="nav-link">VTexter</a>
+            <a href="#duetcast" className="nav-link">DuetCast</a>
             <a href="#security" className="nav-link">Security</a>
             <a href="#blog" className="nav-link">Blog</a>
             <a href="#contact" className="nav-link">Contact</a>
@@ -387,6 +388,151 @@ END:VCARD`;
                   best practices and user feedback. The app demonstrates expertise in full-stack Android development,
                   from UI design to backend integration and security implementation.
                 </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* DuetCast App Section */}
+      <section id="duetcast" className="projects-section duetcast-section">
+        <div className="section-content">
+          <div className="section-header">
+            <h2 className="section-title">DuetCast - Watch Together Platform</h2>
+            <Separator className="title-separator" />
+          </div>
+          <div className="vtexter-showcase">
+            <Card className="vtexter-main-card duetcast-main-card">
+              <CardContent className="vtexter-content">
+                <div className="vtexter-header">
+                  <Badge className="project-category duetcast-badge">Web Application</Badge>
+                  <span className="project-year">2025</span>
+                </div>
+                <h3 className="project-title">DuetCast - Real-Time Collaborative Streaming Platform</h3>
+                <p className="project-description">
+                  A cutting-edge web application enabling synchronized media streaming between users via WebRTC peer-to-peer technology.
+                  DuetCast allows users to watch videos together, share screens, and make audio/video calls in real-time,
+                  regardless of geographical location. Built with Next.js 15 and modern web technologies.
+                </p>
+                <div className="vtexter-tech-stack">
+                  <h4 className="tech-title">Technology Stack</h4>
+                  <div className="tech-badges">
+                    <Badge variant="outline" className="tech-badge">Next.js 15</Badge>
+                    <Badge variant="outline" className="tech-badge">React 18</Badge>
+                    <Badge variant="outline" className="tech-badge">TypeScript</Badge>
+                    <Badge variant="outline" className="tech-badge">WebRTC</Badge>
+                    <Badge variant="outline" className="tech-badge">Firebase</Badge>
+                    <Badge variant="outline" className="tech-badge">Supabase</Badge>
+                    <Badge variant="outline" className="tech-badge">TailwindCSS</Badge>
+                    <Badge variant="outline" className="tech-badge">Radix UI</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="vtexter-features-grid">
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Video className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">P2P Video Streaming</h4>
+                  <ul className="feature-list">
+                    <li>Host streams local video files directly to viewers</li>
+                    <li>WebRTC peer-to-peer connections for low latency</li>
+                    <li>Automatic quality adaptation based on network</li>
+                    <li>Support for multiple viewers simultaneously</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Radio className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">Watch Together Sync</h4>
+                  <ul className="feature-list">
+                    <li>Real-time playback synchronization (~1s heartbeat)</li>
+                    <li>Host controls play/pause for all viewers</li>
+                    <li>Automatic seek sync for late joiners</li>
+                    <li>YouTube and Vimeo URL sharing support</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Users className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">Audio/Video Calls</h4>
+                  <ul className="feature-list">
+                    <li>One-on-one and group video calls</li>
+                    <li>Camera, microphone, and speaker controls</li>
+                    <li>Screen sharing capabilities</li>
+                    <li>Call notifications and ringing UI</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <MessageSquare className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">Real-Time Chat</h4>
+                  <ul className="feature-list">
+                    <li>Instant messaging with emoji reactions</li>
+                    <li>File attachments and voice notes</li>
+                    <li>Typing indicators and online status</li>
+                    <li>Push notifications for new messages</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Wifi className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">Firebase Signaling</h4>
+                  <ul className="feature-list">
+                    <li>Firestore for WebRTC offer/answer exchange</li>
+                    <li>Real-time ICE candidate signaling</li>
+                    <li>Automatic stream cleanup on disconnect</li>
+                    <li>STUN servers for NAT traversal</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Monitor className="feature-icon duetcast-icon" />
+                  <h4 className="feature-title">PWA & Mobile Ready</h4>
+                  <ul className="feature-list">
+                    <li>Installable Progressive Web App</li>
+                    <li>Offline caching with Workbox</li>
+                    <li>Responsive design for all devices</li>
+                    <li>Dark/Light theme support</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="vtexter-status-card duetcast-status">
+              <CardContent className="status-content">
+                <div className="project-status">
+                  <span className="status-indicator completed" style={{ background: '#8B5CF6', animation: 'pulse 2s infinite' }}></span>
+                  <span className="status-text" style={{ color: '#8B5CF6', fontWeight: 'bold' }}>Live Public Beta</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <p className="status-description">
+                    DuetCast is currently in <strong>Trial Beta</strong>. I invite you to test the platform's capabilities!
+                    Experience real-time sync and P2P streaming firsthand.
+                    The platform showcases advanced WebRTC streaming, Firebase real-time sync, and modern React patterns.
+                  </p>
+                  <div>
+                    <Button
+                      className="btn-primary"
+                      onClick={() => window.open('https://v-duetcast.vercel.app', '_blank')}
+                      style={{ background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)', border: 'none' }}
+                    >
+                      Try DuetCast Beta
+                      <ExternalLink size={18} />
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

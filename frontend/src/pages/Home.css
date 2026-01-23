@@ -1367,3 +1367,77 @@ body {
     align-items: flex-start;
   }
 }
+
+/* =====================================================
+   DuetCast Section Styles - Purple/Blue Accent Theme
+   ===================================================== */
+:root {
+  --accent-purple: #8B5CF6;
+  --accent-blue: #3B82F6;
+  --glow-purple: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.duetcast-section {
+  background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(139, 92, 246, 0.03) 50%, var(--bg-primary) 100%);
+}
+
+.duetcast-main-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.duetcast-main-card:hover {
+  border-color: var(--accent-purple);
+  box-shadow: var(--glow-purple);
+}
+
+.duetcast-badge {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)) !important;
+  color: #fff !important;
+}
+
+.duetcast-icon {
+  color: var(--accent-purple) !important;
+}
+
+.duetcast-section .feature-card:hover {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+.duetcast-section .feature-list li::before {
+  color: var(--accent-purple);
+}
+
+.duetcast-status {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139, 92, 246, 0.15) 100%);
+  border: 1px solid var(--accent-purple);
+}
+
+.duetcast-link {
+  color: var(--accent-purple);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.duetcast-link:hover {
+  color: var(--accent-blue);
+  text-shadow: var(--glow-purple);
+}
+
+.duetcast-section .tech-badge {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.duetcast-section .tech-badge:hover {
+  border-color: var(--accent-purple);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* DuetCast responsive */
+@media (max-width: 768px) {
+  .duetcast-section .vtexter-features-grid {
+    grid-template-columns: 1fr;
+  }
+}
