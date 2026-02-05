@@ -30,28 +30,28 @@ const MusicPlayer = () => {
       artist: "",
       file: "/music/Glorious.mp3",
       duration: "3:40",
-      previewDuration: 180
+      previewDuration: 200
     },
     {
       title: "forver-young",
       artist: "ALPHAVILLE",
       file: "/music/forever-young.mp3",
       duration: "3:45",
-      previewDuration: 180
+      previewDuration: 200
     },
     {
       title: "Waiting for Love",
       artist: "Avicci",
       file: "/music/Waiting for Love.mp3",
       duration: "3:56",
-      previewDuration: 30
+      previewDuration: 200
     },
     {
       title: "Anxiety",
       artist: "Doechii",
       file: "/music/Anxiety.mp3",
       duration: "4:09",
-      previewDuration: 20
+      previewDuration: 200
     },
 
     {
@@ -59,7 +59,7 @@ const MusicPlayer = () => {
       artist: "",
       file: "/music/Black and Yellow.mp3",
       duration: "3:38",
-      previewDuration: 60
+      previewDuration: 200
     },
     {
       title: "cough_odo_",
@@ -73,7 +73,7 @@ const MusicPlayer = () => {
       artist: "Frances yip",
       file: "/music/Shanghai Beach.mp3",
       duration: "3:14",
-      previewDuration: 60
+      previewDuration: 200
     }
     // Add more tracks here by following this format:
     // {
