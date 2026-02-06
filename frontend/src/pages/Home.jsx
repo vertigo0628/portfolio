@@ -1,4 +1,5 @@
 import React, { useState, Suspense, lazy } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { portfolioData } from '../mock';
 import WelcomePopup from '../components/WelcomePopup';
 import MusicPlayer from '../components/MusicPlayer';
@@ -9,7 +10,8 @@ import { Separator } from '../components/ui/separator';
 import {
   Mail, Phone, Github, Linkedin, Instagram, Download,
   Code2, Shield, Palette, ArrowRight, Star, MessageSquare,
-  MapPin, GraduationCap, Briefcase, Loader2, Video, Users, Radio, Monitor, Wifi, ExternalLink
+  MapPin, GraduationCap, Briefcase, Loader2, Video, Users, Radio, Monitor, Wifi, ExternalLink,
+  Cpu, Grid, Zap, Smartphone, Play
 } from 'lucide-react';
 import ScrollAnimation from '../components/ScrollAnimation';
 import SkillsMarquee from '../components/SkillsMarquee';
@@ -17,6 +19,7 @@ import CommandPalette from '../components/CommandPalette';
 import GithubActivity from '../components/GithubActivity';
 import GithubProjects from '../components/GithubProjects';
 import DuetCastCaseStudy from '../components/DuetCastCaseStudy';
+
 import Background3D from '../components/Background3D';
 import './Home.css';
 
@@ -24,6 +27,7 @@ import './Home.css';
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Home = () => {
+  const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -155,6 +159,7 @@ END:VCARD`;
           </div>
           <nav className="nav-menu">
             <a href="#about" className="nav-link">About</a>
+            <a href="#vlauncher" className="nav-link">V-Launcher</a>
             <a href="#vtexter" className="nav-link">VTexter</a>
             <a href="#duetcast" className="nav-link">DuetCast</a>
             <a href="#security" className="nav-link">Security</a>
@@ -273,6 +278,107 @@ END:VCARD`;
             </div>
           </div>
         </div>
+      </section>
+
+      {/* V-Launcher Section */}
+      <section id="vlauncher" className="projects-section">
+        <ScrollAnimation className="section-content">
+          <div className="section-header">
+            <h2 className="section-title">V-Launcher - Neural Interface</h2>
+            <Separator className="title-separator" style={{ background: '#ec4899', boxShadow: '0 0 20px rgba(236, 72, 153, 0.4)' }} />
+          </div>
+          <div className="vtexter-showcase">
+            <Card className="vtexter-main-card" style={{ borderColor: 'rgba(236, 72, 153, 0.3)' }}>
+              <CardContent className="vtexter-content">
+                <div className="vtexter-header">
+                  <Badge className="project-category" style={{ background: '#ec4899' }}>Mobile Innovation</Badge>
+                  <span className="project-year">2025</span>
+                </div>
+                <h3 className="project-title">V-Launcher - The Future of Android Interaction</h3>
+                <p className="project-description">
+                  A radical rethinking of the Android home screen. V-Launcher replaces standard grids with a biological
+                  'Flower Grid' and introduces a 'Neural Hub' for visualizing system vitals. It features a complete
+                  glassmorphism UI with neon aesthetics helping you feel like a cyberpunk protagonist.
+                </p>
+                <div className="vtexter-tech-stack">
+                  <h4 className="tech-title">Technology Stack</h4>
+                  <div className="tech-badges">
+                    <Badge variant="outline" className="tech-badge">Kotlin</Badge>
+                    <Badge variant="outline" className="tech-badge">Jetpack Compose</Badge>
+                    <Badge variant="outline" className="tech-badge">Android Canvas API</Badge>
+                    <Badge variant="outline" className="tech-badge">Coroutines</Badge>
+                    <Badge variant="outline" className="tech-badge">RenderEffect</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="vtexter-features-grid">
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Cpu className="feature-icon" style={{ color: '#ec4899' }} />
+                  <h4 className="feature-title">Neural Hub</h4>
+                  <ul className="feature-list">
+                    <li>Real-time RAM & CPU visualization</li>
+                    <li>Battery health algorithms</li>
+                    <li>Heads-Up Display (HUD) overlay</li>
+                    <li>Smooth 60fps animations via Coroutines</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Grid className="feature-icon" style={{ color: '#ec4899' }} />
+                  <h4 className="feature-title">Smart Flower Grid</h4>
+                  <ul className="feature-list">
+                    <li>Hexagonal icon packing algorithm</li>
+                    <li>Dynamic re-flow on rotation</li>
+                    <li>Organic "Bloom" animations on folder open</li>
+                    <li>Gesture-based navigation</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Zap className="feature-icon" style={{ color: '#ec4899' }} />
+                  <h4 className="feature-title">Inline Neural Search</h4>
+                  <ul className="feature-list">
+                    <li>Zero-latency typing feedback</li>
+                    <li>Local state buffering for instant UI</li>
+                    <li>Deep linking to system apps & web</li>
+                    <li>Stateless overlay architecture</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="feature-card">
+                <CardContent className="feature-content">
+                  <Smartphone className="feature-icon" style={{ color: '#ec4899' }} />
+                  <h4 className="feature-title">System Integration</h4>
+                  <ul className="feature-list">
+                    <li>Wallpaper extraction and theming</li>
+                    <li>Immersive mode management</li>
+                    <li>Custom notification handling</li>
+                    <li>Optimized for low-memory devices</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="flex justify-center mt-8">
+              <Button
+                className="btn-primary"
+                onClick={() => navigate('/v-launcher')}
+                style={{ background: '#ec4899', border: 'none' }}
+              >
+                View Technical Documentation
+                <ArrowRight size={18} />
+              </Button>
+            </div>
+          </div>
+        </ScrollAnimation>
       </section>
 
       {/* VTexter App Section */}

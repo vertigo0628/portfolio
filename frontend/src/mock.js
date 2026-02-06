@@ -30,13 +30,22 @@ export const portfolioData = {
 
   projects: [
     {
+      id: 7,
+      title: "V-Launcher (Neural Interface)",
+      description: "A futuristic Android launcher featuring a Neural Hub for system diagnostics, a hexagonal 'Flower Grid' app drawer, and instant 'Inline Neural Search'. Built with Jetpack Compose for a cyberpunk aesthetic.",
+      technologies: ["Kotlin", "Jetpack Compose", "Android SDK", "Coroutines"],
+      category: "Mobile Development",
+      status: "in-progress",
+      year: "2026"
+    },
+    {
       id: 1,
       title: "SecureVault Mobile",
       description: "A secure password manager mobile app with biometric authentication and end-to-end encryption. Built with Kotlin for Android with custom security protocols.",
       technologies: ["Kotlin", "Android", "SQLCipher", "Biometric API"],
       category: "Mobile Development",
       status: "completed",
-      year: "2024"
+      year: "2025"
     },
     {
       id: 2,
@@ -45,7 +54,7 @@ export const portfolioData = {
       technologies: ["Python", "FastAPI", "MongoDB", "React", "WebSocket"],
       category: "Software Development",
       status: "in-progress",
-      year: "2024"
+      year: "2025"
     },
     {
       id: 3,
@@ -54,7 +63,7 @@ export const portfolioData = {
       technologies: ["Figma", "Adobe XD", "UI/UX", "Prototyping"],
       category: "UI/UX Design",
       status: "completed",
-      year: "2023"
+      year: "2025"
     },
     {
       id: 4,
@@ -63,7 +72,7 @@ export const portfolioData = {
       technologies: ["Python", "Nmap", "Metasploit", "Burp Suite"],
       category: "Cyber Security",
       status: "completed",
-      year: "2024"
+      year: "2025"
     },
     {
       id: 5,
@@ -240,6 +249,45 @@ useEffect(() => {
       {
         title: "Race Conditions in Signaling",
         description: "Handling 'offer' and 'answer' collisions when two users try to connect simultaneously. We solved this using a strict 'Polite Peer' pattern where one side always yields to the other regarding connection renegotiation."
+      }
+    ]
+  },
+
+  vLauncherCaseStudy: {
+    title: "Engineering the Neural Interface: V-Launcher",
+    introduction: "Creating a futuristic launcher isn't just about neon colors; it requires a complete rethink of Android's UI paradigms. We encountered significant challenges in state management for the 'Inline Neural Search' and mathematical complexity in the 'Smart Flower Grid'.",
+    architecture: {
+      title: "State Hoisting & Inverse Data Flow",
+      description: "To fix the invisible search text bug, we had to refactor the entire search overlay to be stateless. We hoisted the `searchQuery` state to the `HomeViewModel` and implemented a local state buffer for immediate UI responsiveness.",
+      diagram: "UI Input -> Local Buffer (Discrete) -> Immediate Feedback || UI Input -> ViewModel (Async) -> Search Results",
+      points: [
+        "Decoupled typing feedback from business logic for zero-latency feel",
+        "Used `BasicTextField` with custom brush rendering to bypass Material styling conflicts",
+        "Implemented 'Inverse State Hoisting' where the overlay controls root-level visibility"
+      ]
+    },
+    syncLogic: {
+      title: "The Hexagonal 'Flower Grid' Algorithm",
+      description: "Standard Android GridViews don't support honeycomb layouts. We had to calculate custom (x,y) offsets for every app icon based on a hexagonal coordinate system.",
+      codeSnippet: `// Hexagonal Offset Logic
+val xPos = col * (size * 1.5f)
+val yPos = row * (size * sqrt(3.0f)) + 
+    (if(col % 2 != 0) size * sqrt(3.0f)/2 else 0f)
+// Result: Perfect honeycomb packing`,
+      mechanics: [
+        "Staggered rows based on even/odd columns",
+        "Dynamic re-calculation on screen rotation",
+        "Custom hit-testing for non-rectangular touch targets"
+      ]
+    },
+    challenges: [
+      {
+        title: "The 'Invisible Text' Ghost Bug",
+        description: "We faced a critical bug where the search input was invisible. It turned out to be a race condition in the ViewModel state loop. We solved it by introducing a 'Local State Buffer' that updates the UI immediately while the ViewModel processes the query asynchronously."
+      },
+      {
+        title: "Real-Time Neural Hub",
+        description: "Building the HUD required polling system stats without draining battery. We used `ActivityManager.MemoryInfo` and `BatteryManager` with a `suspend` function loop running on `Dispatchers.IO` to ensure smooth UI performance."
       }
     ]
   }
