@@ -2,7 +2,6 @@ import React, { useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { portfolioData } from '../mock';
 import WelcomePopup from '../components/WelcomePopup';
-import MusicPlayer from '../components/MusicPlayer';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -137,7 +136,6 @@ END:VCARD`;
       <Background3D />
       <CommandPalette />
       <WelcomePopup show={showWelcome} onClose={() => setShowWelcome(false)} />
-      <MusicPlayer />
 
       {/* Header */}
       <header className="portfolio-header">

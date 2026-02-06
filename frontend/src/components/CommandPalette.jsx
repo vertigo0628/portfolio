@@ -3,7 +3,7 @@ import { Command } from 'cmdk';
 import {
     Home, User, Briefcase, Mail, FileDown,
     Github, Linkedin, ExternalLink, Moon, Sun,
-    Code, Search, Phone, Video
+    Code, Search, Phone, Video, Smartphone
 } from 'lucide-react';
 import { portfolioData } from '../mock';
 import './CommandPalette.css';
@@ -66,6 +66,10 @@ const CommandPalette = () => {
                             <Command.Item onSelect={() => runCommand(() => scrollToSection('about'))}>
                                 <User className="mr-2" size={16} />
                                 <span>About Me</span>
+                            </Command.Item>
+                            <Command.Item onSelect={() => runCommand(() => scrollToSection('vlauncher'))}>
+                                <Smartphone className="mr-2" size={16} />
+                                <span>V-Launcher</span>
                             </Command.Item>
                             <Command.Item onSelect={() => runCommand(() => scrollToSection('vtexter'))}>
                                 <Code className="mr-2" size={16} />
